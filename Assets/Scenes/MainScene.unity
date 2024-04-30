@@ -9743,6 +9743,8 @@ MonoBehaviour:
   Lines_Button: {fileID: 1443994261}
   AutoSpin_Button: {fileID: 1825438410}
   AutoSpinStop_Button: {fileID: 1996228740}
+  Double_button: {fileID: 1904672562}
+  BetOne_button: {fileID: 1578118707}
   Symbol1:
   - {fileID: 21300000, guid: 58d1c65491c4d4b6cba3f865919d360d, type: 3}
   - {fileID: 21300000, guid: b11775147505747aca94f42a17bea423, type: 3}

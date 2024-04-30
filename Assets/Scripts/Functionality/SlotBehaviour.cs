@@ -47,6 +47,8 @@ public class SlotBehaviour : MonoBehaviour
     [SerializeField]
     private Button AutoSpin_Button;
     [SerializeField] private Button AutoSpinStop_Button;
+    [SerializeField] private Button Double_button;
+    [SerializeField] private Button BetOne_button;
 
     [Header("Animated Sprites")]
     [SerializeField]
@@ -458,6 +460,8 @@ public class SlotBehaviour : MonoBehaviour
         if (MaxBet_Button) MaxBet_Button.interactable = toggle;
         if (AutoSpin_Button) AutoSpin_Button.interactable = toggle;
         if (Lines_Button) Lines_Button.interactable = toggle;
+        if (Double_button) Double_button.interactable = toggle;
+        if (BetOne_button) BetOne_button.interactable = toggle;
 
     }
 
