@@ -40,6 +40,13 @@ public class SlotBehaviour : MonoBehaviour
     [Header("Buttons")]
     [SerializeField]
     private Button SlotStart_Button;
+    [SerializeField]
+    private Button MaxBet_Button;
+    [SerializeField]
+    private Button Lines_Button;
+    [SerializeField]
+    private Button AutoSpin_Button;
+    [SerializeField] private Button AutoSpinStop_Button;
 
     [Header("Animated Sprites")]
     [SerializeField]
@@ -69,8 +76,6 @@ public class SlotBehaviour : MonoBehaviour
     [SerializeField]
     private int[] Lines_num;
     [SerializeField]
-    private Button Lines_Button;
-    [SerializeField]
     private TMP_Text Balance_text;
     [SerializeField]
     private TMP_Text TotalBet_text;
@@ -78,16 +83,14 @@ public class SlotBehaviour : MonoBehaviour
     private Image Lines_Image;
     [SerializeField]
     private TMP_Text TotalWin_text;
-    [SerializeField]
-    private Button AutoSpin_Button;
+
     [SerializeField]
     private Sprite AutoSpinHover_Sprite;
     [SerializeField]
     private Sprite AutoSpin_Sprite;
     [SerializeField]
     private Image AutoSpin_Image;
-    [SerializeField]
-    private Button MaxBet_Button;
+
     [SerializeField]
     private Sprite[] Lines_Sprites;
     private int LineCounter = 0;
@@ -125,11 +128,14 @@ public class SlotBehaviour : MonoBehaviour
 
     [SerializeField]
     private SocketIOManager SocketManager;
-
-    Coroutine AutoSpinRoutine = null;
-    bool IsAutoSpin = false;
-
     [SerializeField] private AudioController audioController;
+
+    private Coroutine AutoSpinRoutine = null;
+    private Coroutine tweenroutine = null;
+    private bool IsAutoSpin = false;
+    private bool IsSpinning = false;
+
+
 
     private void Start()
     {
@@ -151,38 +157,71 @@ public class SlotBehaviour : MonoBehaviour
 
         if (AutoSpin_Button) AutoSpin_Button.onClick.RemoveAllListeners();
         if (AutoSpin_Button) AutoSpin_Button.onClick.AddListener(AutoSpin);
+
+        if (AutoSpinStop_Button) AutoSpinStop_Button.onClick.RemoveAllListeners();
+        if (AutoSpinStop_Button) AutoSpinStop_Button.onClick.AddListener(StopAutoSpin);
     }
 
     private void AutoSpin()
     {
-        IsAutoSpin = !IsAutoSpin;
-        if (IsAutoSpin)
+        if (!IsAutoSpin)
         {
-            if (AutoSpin_Image) AutoSpin_Image.sprite = AutoSpinHover_Sprite;
+
+            IsAutoSpin = true;
+            if (AutoSpinStop_Button) AutoSpinStop_Button.gameObject.SetActive(true);
+            if (AutoSpin_Button) AutoSpin_Button.gameObject.SetActive(false);
+
+            //if (AutoSpin_Image) AutoSpin_Image.sprite = AutoSpinHover_Sprite;
             if (AutoSpinRoutine != null)
             {
                 StopCoroutine(AutoSpinRoutine);
                 AutoSpinRoutine = null;
+                //StopCoroutine(tweenroutine);
+                //tweenroutine = null;
             }
             AutoSpinRoutine = StartCoroutine(AutoSpinCoroutine());
+
         }
-        else
+
+
+
+    }
+
+    private void StopAutoSpin()
+    {
+        if (IsAutoSpin)
         {
-            if (AutoSpin_Image) AutoSpin_Image.sprite = AutoSpin_Sprite;
-            if (AutoSpinRoutine != null)
-            {
-                StopCoroutine(AutoSpinRoutine);
-                AutoSpinRoutine = null;
-            }
+            IsAutoSpin = false;
+            if (AutoSpinStop_Button) AutoSpinStop_Button.gameObject.SetActive(false);
+            if (AutoSpin_Button) AutoSpin_Button.gameObject.SetActive(true);
+            StartCoroutine(StopAutoSpinCoroutine());
         }
+
     }
 
     private IEnumerator AutoSpinCoroutine()
     {
-        while (true)
+
+        while (IsAutoSpin)
         {
-            StartSlots(true);
-            yield return new WaitForSeconds(10);
+            StartSlots(IsAutoSpin);
+            yield return tweenroutine;
+
+
+        }
+    }
+
+    private IEnumerator StopAutoSpinCoroutine()
+    {
+        yield return new WaitUntil(() => !IsSpinning);
+        ToggleButtonGrp(true);
+        if (AutoSpinRoutine != null || tweenroutine != null)
+        {
+            StopCoroutine(AutoSpinRoutine);
+            StopCoroutine(tweenroutine);
+            tweenroutine = null;
+            AutoSpinRoutine = null;
+            StopCoroutine(StopAutoSpinCoroutine());
         }
     }
 
@@ -341,12 +380,15 @@ public class SlotBehaviour : MonoBehaviour
     {
         if (!autoSpin)
         {
-            if (AutoSpin_Image) AutoSpin_Image.sprite = AutoSpin_Sprite;
+            // if (AutoSpin_Image) AutoSpin_Image.sprite = AutoSpin_Sprite;
             if (AutoSpinRoutine != null)
             {
                 StopCoroutine(AutoSpinRoutine);
+                StopCoroutine(tweenroutine);
+                tweenroutine = null;
                 AutoSpinRoutine = null;
             }
+
         }
         if (GhostLaughing_Object) GhostLaughing_Object.SetActive(false);
         if (GhostIdle_Object) GhostIdle_Object.SetActive(true);
@@ -365,11 +407,14 @@ public class SlotBehaviour : MonoBehaviour
             Tempimages[i].slotImages.TrimExcess();
         }
         PayCalculator.ResetLines();
-        StartCoroutine(TweenRoutine());
+        tweenroutine=StartCoroutine(TweenRoutine());
     }
 
     private IEnumerator TweenRoutine()
     {
+        IsSpinning = true;
+        ToggleButtonGrp(false);
+
         for (int i = 0; i < numberOfSlots; i++)
         {
             InitializeTweening(Slot_Transform[i]);
@@ -390,8 +435,32 @@ public class SlotBehaviour : MonoBehaviour
         if (GhostIdle_Anim) GhostIdle_Anim.StopAnimation();
         if (GhostIdle_Object) GhostIdle_Object.SetActive(false);
 
-        if (SlotStart_Button) SlotStart_Button.interactable = true;
+        if (!IsAutoSpin)
+        {
+            ToggleButtonGrp(true);
+            IsSpinning = false;
+
+        }
+        else
+        {
+
+
+            IsSpinning = false;
+            yield return new WaitForSeconds(5f);
+        };
     }
+
+    void ToggleButtonGrp(bool toggle)
+    {
+
+        if (SlotStart_Button) SlotStart_Button.interactable = toggle;
+        if (Lines_Button) Lines_Button.interactable = toggle;
+        if (MaxBet_Button) MaxBet_Button.interactable = toggle;
+        if (AutoSpin_Button) AutoSpin_Button.interactable = toggle;
+        if (Lines_Button) Lines_Button.interactable = toggle;
+
+    }
+
 
     private void StartGameAnimation(GameObject animObjects, int  LineID) 
     {
