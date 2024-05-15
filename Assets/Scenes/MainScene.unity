@@ -9679,7 +9679,6 @@ MonoBehaviour:
   mainContainer_RT: {fileID: 1574897783}
   myImages:
   - {fileID: 21300000, guid: 58d1c65491c4d4b6cba3f865919d360d, type: 3}
-  - {fileID: 21300000, guid: e2c4f64e8d6ad4163a2b65f44456d52e, type: 3}
   - {fileID: 21300000, guid: 412de4cd1d2544b46bc6abec49d51a04, type: 3}
   - {fileID: 21300000, guid: 03f79fde6873347199ee8d803aa93252, type: 3}
   - {fileID: 21300000, guid: 1e1c4ee7b39d44ffba243e6811c2979f, type: 3}
@@ -9688,6 +9687,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 762daca75f1584548aba41607f6f1b33, type: 3}
   - {fileID: 21300000, guid: d3588b7cf21a64aa78021225243ebfef, type: 3}
   - {fileID: 21300000, guid: 2c41cf8617b5d49bc8e0d74278f6f795, type: 3}
+  - {fileID: 21300000, guid: e2c4f64e8d6ad4163a2b65f44456d52e, type: 3}
   - {fileID: 21300000, guid: 4364dc31b09dc49c8b7185d942e8a1a1, type: 3}
   images:
   - slotImages: []
@@ -9756,17 +9756,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7540bad39eafa450692313cf0e682219, type: 3}
   - {fileID: 21300000, guid: 68b34286007274e0d8586baab02e666f, type: 3}
   - {fileID: 21300000, guid: 9bcaa0a45be7a479aafc4532092a31bc, type: 3}
-  Symbol2:
-  - {fileID: 21300000, guid: e2c4f64e8d6ad4163a2b65f44456d52e, type: 3}
-  - {fileID: 21300000, guid: 81565dccef43440068882724ccad13f4, type: 3}
-  - {fileID: 21300000, guid: 5081b03daecb245b888d82ba77abcf61, type: 3}
-  - {fileID: 21300000, guid: 16b08c63dc84c4cd39b582fc0edc2e77, type: 3}
-  - {fileID: 21300000, guid: f4932204791a94ecaae4f21b549850a5, type: 3}
-  - {fileID: 21300000, guid: dddb64bd6d08d4cc085d532c85589ac6, type: 3}
-  - {fileID: 21300000, guid: 99cca435138034c219a4fcecfa157f20, type: 3}
-  - {fileID: 21300000, guid: b79555a4fcc094cb087f9f4e82e0a5d6, type: 3}
-  - {fileID: 21300000, guid: 4ce0f14df1d874f5382a618c5e4a9552, type: 3}
-  - {fileID: 21300000, guid: d89b7ee73b2c3441ea03bce108e1cef0, type: 3}
   Symbol3:
   - {fileID: 21300000, guid: 412de4cd1d2544b46bc6abec49d51a04, type: 3}
   - {fileID: 21300000, guid: cfd5636f8365f4433a868b5899477622, type: 3}
@@ -9855,6 +9844,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0c09a44d969db4659b614eab8c430267, type: 3}
   - {fileID: 21300000, guid: 599996b90ccf14a77b480e511bb59c39, type: 3}
   - {fileID: 21300000, guid: 3c7b1145acefb41a392bedf255e98f89, type: 3}
+  Symbol2:
+  - {fileID: 21300000, guid: e2c4f64e8d6ad4163a2b65f44456d52e, type: 3}
+  - {fileID: 21300000, guid: 81565dccef43440068882724ccad13f4, type: 3}
+  - {fileID: 21300000, guid: 5081b03daecb245b888d82ba77abcf61, type: 3}
+  - {fileID: 21300000, guid: 16b08c63dc84c4cd39b582fc0edc2e77, type: 3}
+  - {fileID: 21300000, guid: f4932204791a94ecaae4f21b549850a5, type: 3}
+  - {fileID: 21300000, guid: dddb64bd6d08d4cc085d532c85589ac6, type: 3}
+  - {fileID: 21300000, guid: 99cca435138034c219a4fcecfa157f20, type: 3}
+  - {fileID: 21300000, guid: b79555a4fcc094cb087f9f4e82e0a5d6, type: 3}
+  - {fileID: 21300000, guid: 4ce0f14df1d874f5382a618c5e4a9552, type: 3}
+  - {fileID: 21300000, guid: d89b7ee73b2c3441ea03bce108e1cef0, type: 3}
   Symbol11:
   - {fileID: 21300000, guid: 4364dc31b09dc49c8b7185d942e8a1a1, type: 3}
   - {fileID: 21300000, guid: 9964f41fafeeb49ff9c89d8e41f0df49, type: 3}

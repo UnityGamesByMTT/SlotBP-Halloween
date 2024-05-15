@@ -54,8 +54,6 @@ public class SlotBehaviour : MonoBehaviour
     [SerializeField]
     private Sprite[] Symbol1;
     [SerializeField]
-    private Sprite[] Symbol2;
-    [SerializeField]
     private Sprite[] Symbol3;
     [SerializeField]
     private Sprite[] Symbol4;
@@ -71,6 +69,8 @@ public class SlotBehaviour : MonoBehaviour
     private Sprite[] Symbol9;
     [SerializeField]
     private Sprite[] Symbol10;
+    [SerializeField]
+    private Sprite[] Symbol2;
     [SerializeField]
     private Sprite[] Symbol11;
 
@@ -316,57 +316,57 @@ public class SlotBehaviour : MonoBehaviour
                 }
                 break;
             case 1:
-                for (int i = 0; i < Symbol2.Length; i++)
-                {
-                    animScript.textureArray.Add(Symbol2[i]);
-                }
-                break;
-            case 2:
                 for (int i = 0; i < Symbol3.Length; i++)
                 {
                     animScript.textureArray.Add(Symbol3[i]);
                 }
                 break;
-            case 3:
+            case 2:
                 for (int i = 0; i < Symbol4.Length; i++)
                 {
                     animScript.textureArray.Add(Symbol4[i]);
                 }
                 break;
-            case 4:
+            case 3:
                 for (int i = 0; i < Symbol5.Length; i++)
                 {
                     animScript.textureArray.Add(Symbol5[i]);
                 }
                 break;
-            case 5:
+            case 4:
                 for (int i = 0; i < Symbol6.Length; i++)
                 {
                     animScript.textureArray.Add(Symbol6[i]);
                 }
                 break;
-            case 6:
+            case 5:
                 for (int i = 0; i < Symbol7.Length; i++)
                 {
                     animScript.textureArray.Add(Symbol7[i]);
                 }
                 break;
-            case 7:
+            case 6:
                 for (int i = 0; i < Symbol8.Length; i++)
                 {
                     animScript.textureArray.Add(Symbol8[i]);
                 }
                 break;
-            case 8:
+            case 7:
                 for (int i = 0; i < Symbol9.Length; i++)
                 {
                     animScript.textureArray.Add(Symbol9[i]);
                 }
                 break;
-            case 9:
+            case 8:
                 for (int i = 0; i < Symbol10.Length; i++)
                 {
                     animScript.textureArray.Add(Symbol10[i]);
+                }
+                break;
+            case 9:
+                for (int i = 0; i < Symbol2.Length; i++)
+                {
+                    animScript.textureArray.Add(Symbol2[i]);
                 }
                 break;
             case 10:
