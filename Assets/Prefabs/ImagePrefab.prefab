@@ -135,6 +135,7 @@ MonoBehaviour:
   delayBetweenLoop: 0
   StartOnAwake: 1
   DestroyOnCompletion: 0
+  OriginalSprite: {fileID: 0}
 --- !u!1 &595047196131445314
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,3 +310,4 @@ MonoBehaviour:
   delayBetweenLoop: 0
   StartOnAwake: 0
   DestroyOnCompletion: 0
+  OriginalSprite: {fileID: 0}
