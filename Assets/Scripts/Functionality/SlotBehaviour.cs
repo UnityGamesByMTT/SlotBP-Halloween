@@ -529,6 +529,10 @@ public class SlotBehaviour : MonoBehaviour
             IsSpinning = false;
         }
     }
+    internal void CallCloseSocket()
+    {
+        SocketManager.CloseWebSocket();
+    }
 
     internal void CheckBonusGame()
     {
