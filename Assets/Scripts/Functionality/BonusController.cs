@@ -19,36 +19,45 @@ public class BonusController : MonoBehaviour
     [SerializeField]
     private List<int> CaseValues;
 
+    [SerializeField] private TMP_Text TotalWin_text;
+
     int index = 0;
 
-    internal void GetCaseList(List<int> values)
+    internal bool isOpening;
+    internal bool isFinished;
+    private double totalWin;
+    internal double bet { get; private set; }
+
+    internal void GetCaseList(List<int> values, double betperline)
     {
         index = 0;
         CaseValues.Clear();
         CaseValues.TrimExcess();
         CaseValues = values;
+        bet = betperline;
 
-        foreach (CoffinGame cases in BonusCases)
-        {
-            cases.ResetCase();
-        }
-
-        for (int i = 0; i < CaseValues.Count; i++)
-        {
-            if (CaseValues[i] == -1)
-            {
-                CaseValues.RemoveAt(i);
-                CaseValues.Add(-1);
-            }
-        }
 
         StartBonus();
     }
 
+    internal void setTotalWin(double amount) {
+        totalWin += amount * bet;
+
+        if (TotalWin_text) TotalWin_text.text = totalWin.ToString();
+
+    }
 
     internal void GameOver()
     {
         slotManager.CheckPopups = false;
+        _audioManager.playBgAudio("normal");
+        foreach (CoffinGame cases in BonusCases)
+        {
+            cases.ResetCase();
+        }
+        isFinished = false;
+        TotalWin_text.text = "0";
+        totalWin = 0;
         if (Bonus_Object) Bonus_Object.SetActive(false);
     }
 
@@ -67,6 +76,7 @@ public class BonusController : MonoBehaviour
 
     private void StartBonus()
     {
+        _audioManager.playBgAudio("bonus");
         if (Bonus_Object) Bonus_Object.SetActive(true);
     }
 }

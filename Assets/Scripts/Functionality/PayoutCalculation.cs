@@ -34,7 +34,7 @@ public class PayoutCalculation : MonoBehaviour
     
     internal void GeneratePayoutLinesBackend(int lineIndex = -1, int linecounter = 0, bool isStatic = false)
     {
-        ResetLines();
+        //ResetLines();
         if (lineIndex >= 0)
         {
             if (Lines_Object[lineIndex]) Lines_Object[lineIndex].SetActive(true);

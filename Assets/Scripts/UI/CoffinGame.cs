@@ -9,15 +9,15 @@ public class CoffinGame : MonoBehaviour
     [SerializeField] private Button Coffin;
     [SerializeField] private Color32 text_color;
     [SerializeField] private TMP_Text text;
-    [SerializeField]
-    private GameObject Opening;
     [SerializeField] private ImageAnimation imageAnimation;
     [SerializeField] private BonusController _bonusManager;
     [SerializeField] private SocketIOManager SocketManager;
     [SerializeField] private UIManager uiManager;
     [SerializeField] private GameObject Skeliton;
-    [SerializeField]
-    internal bool isOpen;
+    [SerializeField] private AudioController audioController;
+    [SerializeField] private double value = 0;
+
+    //internal bool isOpen;
 
     void Start()
     {
@@ -27,44 +27,59 @@ public class CoffinGame : MonoBehaviour
 
     internal void ResetCase()
     {
-        isOpen = false;
+        //isOpen = false;
         text.gameObject.SetActive(false);
+        if (Skeliton.gameObject.activeSelf) Skeliton.gameObject.SetActive(false);
+        imageAnimation.gameObject.SetActive(true);
+        Coffin.interactable = true;
+
     }
 
     void OpenCase()
     {
-        if (isOpen)
-            return;
+        //if (isOpen) return;
+        if (_bonusManager.isOpening) return;
+        if (_bonusManager.isFinished) return;
+
+        Coffin.interactable = false;
         PopulateCase();
+        audioController.PlaySpinBonusAudio("bonus");
         imageAnimation.StartAnimation();
-        Opening.SetActive(true);
-        Coffin.gameObject.SetActive(true);
         StartCoroutine(setCase());
     }
 
     void PopulateCase()
     {
-        int value = _bonusManager.GetValue();
-        if (value == -1)
+        value = _bonusManager.GetValue();
+        if (value == 0)
         {
             text.text = "game over";
         }
 
         else
         {
-            text.text = value.ToString();
+
+            text.text = (_bonusManager.bet*value).ToString();
+
         }
     }
 
     IEnumerator setCase()
     {
+        _bonusManager.isOpening = true;
         yield return new WaitUntil(() => !imageAnimation.isplaying);
         yield return new WaitForSeconds(0.3f);
         text.gameObject.SetActive(true);
         text.fontMaterial.SetColor(ShaderUtilities.ID_GlowColor, text_color);
-        isOpen = true;
+        _bonusManager.isOpening = false;
+        if(value>0)
+        audioController.PlayWLAudio("bonuswin");
+        else
+        audioController.PlayWLAudio("bonuslose");
+        _bonusManager.setTotalWin(value);
         if (text.text == "game over")
         {
+            _bonusManager.isFinished = true;
             Skeliton.gameObject.SetActive(true);
             yield return new WaitForSeconds(1f);
             _bonusManager.GameOver();

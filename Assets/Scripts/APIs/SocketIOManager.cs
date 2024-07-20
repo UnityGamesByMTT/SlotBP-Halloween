@@ -13,8 +13,8 @@ using Best.SocketIO.Events;
 
 public class SocketIOManager : MonoBehaviour
 {
-    [SerializeField]
-    private SlotBehaviour slotManager;
+    [SerializeField] private SlotBehaviour slotManager;
+    [SerializeField] private UIManager uiManager;
 
     internal GameData initialData = null;
     internal UIData initUIData = null;
@@ -38,6 +38,7 @@ public class SocketIOManager : MonoBehaviour
     internal bool isResultdone = false;
 
     protected string gameID = "SL-HAL";
+    internal bool isLoading=true;
 
     private void Start()
     {
@@ -154,6 +155,8 @@ public class SocketIOManager : MonoBehaviour
     private void OnDisconnected(string response)
     {
         Debug.Log("Disconnected from the server");
+        uiManager.DisconnectionPopup(false);
+
     }
 
     private void OnError(string response)
@@ -252,7 +255,7 @@ public class SocketIOManager : MonoBehaviour
         }
 
         slotManager.SetInitialUI();
-
+        isLoading = false;
         Application.ExternalCall("window.parent.postMessage", "OnEnter", "*");
     }
 
@@ -396,6 +399,8 @@ public class SocketIOManager : MonoBehaviour
 public class BetData
 {
     public double currentBet;
+    public double currentLines = 9;
+
     //public double TotalLines;
 }
 
@@ -439,7 +444,8 @@ public class AbtLogo
 public class GameData
 {
     public List<List<string>> Reel { get; set; }
-    public List<int> Bets { get; set; }
+    public List<List<double>> Lines { get; set; }
+    public List<double> Bets { get; set; }
     public bool canSwitchLines { get; set; }
     public List<int> LinesCount { get; set; }
     public List<int> autoSpin { get; set; }

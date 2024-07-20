@@ -49,19 +49,58 @@ public class UIManager : MonoBehaviour
     private GameObject CoffinGame_Panel;
 
     [Header("Win Popup")]
-    [SerializeField]
-    private GameObject WinPopup_Object;
-    [SerializeField]
-    private TMP_Text Win_Text;
+    [SerializeField] private GameObject WinPopup_Object;
+    [SerializeField] private Image Win_Image;
+    [SerializeField] private TMP_Text Win_Text;
+    [SerializeField] private Sprite BigWin_Sprite;
+    [SerializeField] private Sprite HugeWin_Sprite;
+    [SerializeField] private Sprite MegaWin_Sprite;
 
-    [SerializeField]
-    private Button GameExit_Button;
+    [Header("Splash Screen")]
+    [SerializeField] private GameObject spalsh_screen;
+    [SerializeField] private TMP_Text loadingText;
+    [SerializeField] private Image progressbar;
 
-    [SerializeField]
-    private SlotBehaviour slotManager;
 
+
+    [Header("scripts")]
+    [SerializeField] private SlotBehaviour slotManager;
     [SerializeField] private AudioController audioController;
+    [SerializeField] private SocketIOManager socketManager;
 
+
+    [Header("settings PopUp")]
+    [SerializeField] private GameObject SettingsPopUpObject;
+    [SerializeField] private Button Setting_button;
+    [SerializeField] private Button Setting_close_button;
+    [SerializeField] private Slider SoundSlider;
+    [SerializeField] private Slider MusicSlider;
+
+    [Header("Quit popup")]
+    [SerializeField] private GameObject QuitPopupObject;
+    [SerializeField] private Button yes_button;
+    [SerializeField] private Button no_button;
+    [SerializeField] private Button cancel_button;
+    [SerializeField] private Button Quit_button;
+
+    [Header("LowBalance Popup")]
+    [SerializeField] private Button LBExit_Button;
+    [SerializeField] private GameObject LBPopup_Object;
+
+
+    [Header("Disconnection Popup")]
+    [SerializeField] private Button CloseDisconnect_Button;
+    [SerializeField] private GameObject DisconnectPopup_Object;
+
+
+
+    private bool isExit = false;
+
+    private void Awake()
+    {
+        if (spalsh_screen) spalsh_screen.SetActive(true);
+        StartCoroutine(LoadingRoutine());
+    }
 
     private void Start()
     {
@@ -71,8 +110,6 @@ public class UIManager : MonoBehaviour
         if (Info_Button) Info_Button.onClick.RemoveAllListeners();
         if (Info_Button) Info_Button.onClick.AddListener(delegate { OpenPopup(PaytablePopup_Object); });
 
-        if (GameExit_Button) GameExit_Button.onClick.RemoveAllListeners();
-        if (GameExit_Button) GameExit_Button.onClick.AddListener(CallOnExitFunction);
 
         if (Next_Button) Next_Button.onClick.RemoveAllListeners();
         if (Next_Button) Next_Button.onClick.AddListener(delegate { TurnPage(true); });
@@ -84,24 +121,109 @@ public class UIManager : MonoBehaviour
 
         if (PaytablePopup_Object) PageList[0].SetActive(true);
 
+        if (SoundSlider) SoundSlider.onValueChanged.AddListener(delegate { ToggleSound(); });
+        if (MusicSlider) MusicSlider.onValueChanged.AddListener(delegate { ToggleMusic(); });
+
+        if (Quit_button) Quit_button.onClick.RemoveAllListeners();
+        if (Quit_button) Quit_button.onClick.AddListener(delegate { OpenPopup(QuitPopupObject); });
+
+        if (no_button) no_button.onClick.RemoveAllListeners();
+        if (no_button) no_button.onClick.AddListener(delegate { ClosePopup(QuitPopupObject); });
+
+        if (cancel_button) cancel_button.onClick.RemoveAllListeners();
+        if (cancel_button) cancel_button.onClick.AddListener(delegate { ClosePopup(QuitPopupObject); });
+
+        if (yes_button) yes_button.onClick.RemoveAllListeners();
+        if (yes_button) yes_button.onClick.AddListener(CallOnExitFunction);
+
+        if (LBExit_Button) LBExit_Button.onClick.RemoveAllListeners();
+        if (LBExit_Button) LBExit_Button.onClick.AddListener(delegate { ClosePopup(LBPopup_Object); });
+
+        if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.RemoveAllListeners();
+        if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.AddListener(CallOnExitFunction);
+
+        if (Setting_button) Setting_button.onClick.RemoveAllListeners();
+        if (Setting_button) Setting_button.onClick.AddListener(delegate { OpenPopup(SettingsPopUpObject); });
+
+        if (Setting_close_button) Setting_close_button.onClick.RemoveAllListeners();
+        if (Setting_close_button) Setting_close_button.onClick.AddListener(delegate { ClosePopup(SettingsPopUpObject); });
+
     }
 
-    internal void PopulateWin(double amount)
+
+    internal void LowBalPopup()
     {
+        OpenPopup(LBPopup_Object);
+    }
+
+    private IEnumerator LoadingRoutine()
+    {
+        StartCoroutine(LoadingTextAnimate());
+        float fillAmount = 0.7f;
+        progressbar.DOFillAmount(fillAmount, 2f).SetEase(Ease.Linear);
+        yield return new WaitForSecondsRealtime(2f);
+        yield return new WaitUntil(() => !socketManager.isLoading);
+        progressbar.DOFillAmount(1, 1f).SetEase(Ease.Linear);
+        yield return new WaitForSecondsRealtime(1f);
+        if (spalsh_screen) spalsh_screen.SetActive(false);
+        StopCoroutine(LoadingTextAnimate());
+    }
+
+    private IEnumerator LoadingTextAnimate()
+    {
+        while (true)
+        {
+            if (loadingText) loadingText.text = "Loading.";
+            yield return new WaitForSeconds(0.5f);
+            if (loadingText) loadingText.text = "Loading..";
+            yield return new WaitForSeconds(0.5f);
+            if (loadingText) loadingText.text = "Loading...";
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    internal void PopulateWin(int value, double amount)
+    {
+        switch (value)
+        {
+            case 1:
+                if (Win_Image) Win_Image.sprite = BigWin_Sprite;
+                break;
+            case 2:
+                if (Win_Image) Win_Image.sprite = HugeWin_Sprite;
+                break;
+            case 3:
+                if (Win_Image) Win_Image.sprite = MegaWin_Sprite;
+                break;
+
+        }
+            StartPopupAnim(amount, false);
+
+
+    }
+
+    private void StartPopupAnim(double amount, bool jackpot = false)
+    {
+        audioController.PlaywitchAudio();
         int initAmount = 0;
+
         if (WinPopup_Object) WinPopup_Object.SetActive(true);
+
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
 
         DOTween.To(() => initAmount, (val) => initAmount = val, (int)amount, 5f).OnUpdate(() =>
         {
-            if (Win_Text) Win_Text.text = initAmount.ToString();
+                if (Win_Text) Win_Text.text = initAmount.ToString();
+
         });
 
         DOVirtual.DelayedCall(6f, () =>
         {
             if (WinPopup_Object) WinPopup_Object.SetActive(false);
+
+            audioController.StopWitchAudio();
             if (MainPopup_Object) MainPopup_Object.SetActive(false);
-            slotManager.CheckBonusGame();
+            slotManager.CheckPopups = false;
         });
     }
 
@@ -184,14 +306,49 @@ public class UIManager : MonoBehaviour
 
     }
 
+    private void ToggleMusic()
+    {
+        float value = MusicSlider.value;
+        audioController.ToggleMute(value, "bg");
+
+    }
+
+    private void ToggleSound()
+    {
+
+        float value = SoundSlider.value;
+        if (audioController) audioController.ToggleMute(value, "button");
+        if (audioController) audioController.ToggleMute(value, "wl");
+        if (audioController) audioController.ToggleMute(value, "ghost");
+
+
+    }
+
+
+    internal void DisconnectionPopup(bool isReconnection)
+    {
+        //if (isReconnection)
+        //{
+        //    OpenPopup(ReconnectPopup_Object);
+        //}
+        //else
+        //{
+        //ClosePopup(ReconnectPopup_Object);
+        if (!isExit)
+        {
+            OpenPopup(DisconnectPopup_Object);
+        }
+        //}
+    }
+
     private void GoToPage(int index)
     {
 
         paginationCounter = index + 1;
 
-        paginationCounter = Mathf.Clamp(paginationCounter, 1, 5);
+        paginationCounter = Mathf.Clamp(paginationCounter, 1, 2);
 
-        if (Next_Button) Next_Button.interactable = !(paginationCounter >= 5);
+        if (Next_Button) Next_Button.interactable = !(paginationCounter >= 2);
 
         if (Previous_Button) Previous_Button.interactable = !(paginationCounter <= 1);
 
@@ -206,6 +363,9 @@ public class UIManager : MonoBehaviour
 
     private void CallOnExitFunction()
     {
+        isExit = true;
+        audioController.PlayButtonAudio();
+        socketManager.CloseWebSocket();
         Application.ExternalCall("window.parent.postMessage", "onExit", "*");
     }
 }
