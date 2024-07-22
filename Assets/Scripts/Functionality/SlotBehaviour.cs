@@ -530,19 +530,19 @@ public class SlotBehaviour : MonoBehaviour
             _bonusManager.GetCaseList(SocketManager.resultData.BonusResult, SocketManager.initialData.Bets[BetCounter]);
 
         }
-        else if (SocketManager.resultData.WinAmout >= bet * 5 && SocketManager.resultData.WinAmout < bet * 10 )
+        else if (SocketManager.resultData.WinAmout >= bet * 10 && SocketManager.resultData.WinAmout < bet * 15 )
         {
             uiManager.PopulateWin(1, SocketManager.resultData.WinAmout);
         }
-        else if (SocketManager.resultData.WinAmout >= bet * 10 && SocketManager.resultData.WinAmout < bet * 15)
+        else if (SocketManager.resultData.WinAmout >= bet * 15 && SocketManager.resultData.WinAmout < bet * 20)
         {
             uiManager.PopulateWin(2, SocketManager.resultData.WinAmout);
         }
-        else if (SocketManager.resultData.WinAmout >= bet * 15 )
+        else if (SocketManager.resultData.WinAmout >= bet * 20 )
         {
             uiManager.PopulateWin(3, SocketManager.resultData.WinAmout);
         }
-        else if (SocketManager.resultData.WinAmout > 0 && SocketManager.resultData.WinAmout < bet * 15)
+        else if (SocketManager.resultData.WinAmout > 0 && SocketManager.resultData.WinAmout < bet * 10)
         {
             if (GhostLaugh_Anim) GhostLaugh_Anim.gameObject.SetActive(true);
             GhostLaugh_Anim.StartAnimation();
