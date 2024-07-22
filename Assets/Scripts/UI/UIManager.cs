@@ -265,30 +265,24 @@ public class UIManager : MonoBehaviour
     }
     private void PopulateSymbolsPayout(Paylines paylines)
     {
-        for (int i = 0; i < paylines.symbols.Count; i++)
+        for (int i = 0; i < SymbolsText.Length; i++)
         {
-            if (i < SymbolsText.Length)
+            string text = null;
+            if (paylines.symbols[i].Multiplier[0][0] != 0)
             {
-                string text = null;
-                if (paylines.symbols[i].multiplier._5x != 0)
-                {
-                    text += paylines.symbols[i].multiplier._5x;
-                }
-                if (paylines.symbols[i].multiplier._4x != 0)
-                {
-                    text += "\n" + paylines.symbols[i].multiplier._4x;
-                }
-                if (paylines.symbols[i].multiplier._3x != 0)
-                {
-                    text += "\n" + paylines.symbols[i].multiplier._3x;
-                }
-                if (paylines.symbols[i].multiplier._2x != 0)
-                {
-                    text += "\n" + paylines.symbols[i].multiplier._2x;
-                }
-                if (SymbolsText[i]) SymbolsText[i].text = text;
+                text += "5x - " + paylines.symbols[i].Multiplier[0][0];
             }
+            if (paylines.symbols[i].Multiplier[1][0] != 0)
+            {
+                text += "\n4x - " + paylines.symbols[i].Multiplier[1][0];
+            }
+            if (paylines.symbols[i].Multiplier[2][0] != 0)
+            {
+                text += "\n3x - " + paylines.symbols[i].Multiplier[2][0];
+            }
+            if (SymbolsText[i]) SymbolsText[i].text = text;
         }
+
     }
 
     private void TurnPage(bool type)

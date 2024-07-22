@@ -10,6 +10,8 @@ using System.Linq;
 using Newtonsoft.Json;
 using Best.SocketIO;
 using Best.SocketIO.Events;
+using Newtonsoft.Json.Linq;
+using System.Runtime.Serialization;
 
 public class SocketIOManager : MonoBehaviour
 {
@@ -504,24 +506,36 @@ public class Paylines
 [Serializable]
 public class Symbol
 {
-    public Multiplier multiplier { get; set; }
+    public int ID { get; set; }
+    public string Name { get; set; }
+    [JsonProperty("multiplier")]
+    public object MultiplierObject { get; set; }
+
+    // This property will hold the properly deserialized list of lists of integers
+    [JsonIgnore]
+    public List<List<int>> Multiplier { get; private set; }
+
+    // Custom deserialization method to handle the conversion
+    [OnDeserialized]
+    internal void OnDeserializedMethod(StreamingContext context)
+    {
+        // Handle the case where multiplier is an object (empty in JSON)
+        if (MultiplierObject is JObject)
+        {
+            Multiplier = new List<List<int>>();
+        }
+        else
+        {
+            // Deserialize normally assuming it's an array of arrays
+            Multiplier = JsonConvert.DeserializeObject<List<List<int>>>(MultiplierObject.ToString());
+        }
+    }
+    public object defaultAmount { get; set; }
+    public object symbolsCount { get; set; }
+    public object increaseValue { get; set; }
+    public int freeSpin { get; set; }
 }
 
-[Serializable]
-public class Multiplier
-{
-    [JsonProperty("5x")]
-    public double _5x { get; set; }
-
-    [JsonProperty("4x")]
-    public double _4x { get; set; }
-
-    [JsonProperty("3x")]
-    public double _3x { get; set; }
-
-    [JsonProperty("2x")]
-    public double _2x { get; set; }
-}
 
 [Serializable]
 public class PlayerData
