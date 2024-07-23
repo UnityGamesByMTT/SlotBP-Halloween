@@ -31,8 +31,9 @@ public class SocketIOManager : MonoBehaviour
     [SerializeField]
     internal JSHandler _jsManager;
 
-    [SerializeField]
-    private string SocketURI;
+    //[SerializeField]
+    //private string SocketURI;
+    private string SocketURI= "https://dev.casinoparadize.com";
 
     [SerializeField]
     private string testToken;
