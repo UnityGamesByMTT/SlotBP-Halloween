@@ -53,7 +53,7 @@ public class AudioController : MonoBehaviour
                 //index = 3;
 
         }
-        StopWLAaudio();
+        //StopWLAaudio();
         //audioPlayer_wl.clip = clips[index];
         //audioPlayer_wl.loop = true;
         audioPlayer_wl.Play();

@@ -145,7 +145,7 @@ public class SlotBehaviour : MonoBehaviour
     private Coroutine AutoSpinRoutine = null;
     private Coroutine tweenroutine = null;
     private bool IsAutoSpin = false;
-    private bool IsSpinning = false;
+    [SerializeField]private bool IsSpinning = false;
     private int BetCounter = 0;
     internal bool CheckPopups = false;
     private double currentBalance = 0;
@@ -453,6 +453,11 @@ public class SlotBehaviour : MonoBehaviour
         if (currentBalance < currentTotalBet)
         {
             CompareBalance();
+            if (IsAutoSpin) {
+
+                StopAutoSpin();
+                yield return new WaitForSeconds(1f);
+            }
             yield break;
         }
 
@@ -492,8 +497,6 @@ public class SlotBehaviour : MonoBehaviour
 
         yield return new WaitUntil(() => SocketManager.isResultdone);
 
-        if (audioController) audioController.PlayWLAudio("spinStop");
-
         for (int j = 0; j < SocketManager.resultData.ResultReel.Count; j++)
         {
             List<int> resultnum = SocketManager.resultData.FinalResultReel[j]?.Split(',')?.Select(Int32.Parse)?.ToList();
@@ -514,7 +517,6 @@ public class SlotBehaviour : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         if (audioController) audioController.StopApinBonusAudio();
         if (GhostIdle_Anim) GhostIdle_Anim.StopAnimation();
-        GhostIdle_Anim.gameObject.SetActive(false);
         CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, SocketManager.resultData.jackpot);
         KillAllTweens();
 
@@ -544,11 +546,13 @@ public class SlotBehaviour : MonoBehaviour
         }
         else if (SocketManager.resultData.WinAmout > 0 && SocketManager.resultData.WinAmout < bet * 10)
         {
+            GhostIdle_Anim.gameObject.SetActive(false);
             if (GhostLaugh_Anim) GhostLaugh_Anim.gameObject.SetActive(true);
             GhostLaugh_Anim.StartAnimation();
-            if (audioController) audioController.PlayWLAudio("win");
+            audioController.PlayWLAudio("win");
             audioController.PlayGhostAudio();
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(3.5f);
+            audioController.StopWLAaudio();
             GhostLaugh_Anim.StopAnimation();
             GhostLaugh_Anim.gameObject.SetActive(false);
             GhostIdle_Anim.gameObject.SetActive(true);
