@@ -281,7 +281,13 @@ public class SlotBehaviour : MonoBehaviour
     {
         if (audioController) audioController.PlayButtonAudio();
         BetCounter = SocketManager.initialData.Bets.Count - 1;
-        if (TotalBet_text) TotalBet_text.text = SocketManager.initialData.Bets[BetCounter].ToString();
+        currentTotalBet = SocketManager.initialData.Bets[BetCounter] * SocketManager.initialData.Lines.Count;
+
+        if (TotalBet_text) TotalBet_text.text = currentTotalBet.ToString();
+        if (BetperLine_text) BetperLine_text.text = SocketManager.initialData.Bets[BetCounter].ToString();
+
+        if (currentTotalBet < currentBalance)
+            CompareBalance();
     }
 
     private void ToggleLine()
