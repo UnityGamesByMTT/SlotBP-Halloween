@@ -48,6 +48,7 @@ public class SlotBehaviour : MonoBehaviour
     private Button AutoSpin_Button;
     [SerializeField] private Button AutoSpinStop_Button;
     [SerializeField] private Button BetOne_button;
+    [SerializeField] private Button GambleButton;
 
     [Header("Animated Sprites")]
     [SerializeField]
@@ -145,7 +146,7 @@ public class SlotBehaviour : MonoBehaviour
     private Coroutine AutoSpinRoutine = null;
     private Coroutine tweenroutine = null;
     private bool IsAutoSpin = false;
-    [SerializeField]private bool IsSpinning = false;
+    [SerializeField] private bool IsSpinning = false;
     private int BetCounter = 0;
     internal bool CheckPopups = false;
     private double currentBalance = 0;
@@ -207,7 +208,7 @@ public class SlotBehaviour : MonoBehaviour
         LineCounter = SocketManager.initialData.LinesCount.Count - 1;
         if (Lines_text) Lines_text.text = SocketManager.initialData.LinesCount[LineCounter].ToString();
         PayCalculator.SetButtonActive(SocketManager.initialData.LinesCount[LineCounter]);
-        if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter] *SocketManager.initialData.Lines.Count).ToString();
+        if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter] * SocketManager.initialData.Lines.Count).ToString();
         if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString();
         if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString();
         if (BetperLine_text) BetperLine_text.text = (SocketManager.initialData.Bets[BetCounter]).ToString();
@@ -272,7 +273,7 @@ public class SlotBehaviour : MonoBehaviour
 
         currentTotalBet = SocketManager.initialData.Bets[BetCounter] * SocketManager.initialData.Lines.Count;
         if (BetperLine_text) BetperLine_text.text = (SocketManager.initialData.Bets[BetCounter]).ToString();
-        if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter]* SocketManager.initialData.Lines.Count).ToString();
+        if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter] * SocketManager.initialData.Lines.Count).ToString();
         CompareBalance();
 
     }
@@ -459,7 +460,8 @@ public class SlotBehaviour : MonoBehaviour
         if (currentBalance < currentTotalBet)
         {
             CompareBalance();
-            if (IsAutoSpin) {
+            if (IsAutoSpin)
+            {
 
                 StopAutoSpin();
                 yield return new WaitForSeconds(1f);
@@ -468,6 +470,7 @@ public class SlotBehaviour : MonoBehaviour
         }
 
         ToggleButtonGrp(false);
+        gambleController.toggleDoubleButton(false);
         if (audioController) audioController.PlaySpinBonusAudio();
         for (int i = 0; i < numberOfSlots; i++)
         {
@@ -528,7 +531,7 @@ public class SlotBehaviour : MonoBehaviour
 
         //yield return new WaitForSeconds(2.5f);
         CheckPopups = true;
-      
+
         //audioController.StopGhostAudio();
         currentBalance = SocketManager.playerdata.Balance;
 
@@ -538,7 +541,7 @@ public class SlotBehaviour : MonoBehaviour
             _bonusManager.GetCaseList(SocketManager.resultData.BonusResult, SocketManager.initialData.Bets[BetCounter]);
 
         }
-        else if (SocketManager.resultData.WinAmout >= bet * 10 && SocketManager.resultData.WinAmout < bet * 15 )
+        else if (SocketManager.resultData.WinAmout >= bet * 10 && SocketManager.resultData.WinAmout < bet * 15)
         {
             uiManager.PopulateWin(1, SocketManager.resultData.WinAmout);
         }
@@ -546,18 +549,18 @@ public class SlotBehaviour : MonoBehaviour
         {
             uiManager.PopulateWin(2, SocketManager.resultData.WinAmout);
         }
-        else if (SocketManager.resultData.WinAmout >= bet * 20 )
+        else if (SocketManager.resultData.WinAmout >= bet * 20)
         {
             uiManager.PopulateWin(3, SocketManager.resultData.WinAmout);
         }
-        else if (SocketManager.resultData.WinAmout > 0 && SocketManager.resultData.WinAmout < bet * 10)
+        else if (SocketManager.resultData.WinAmout > 0 &&  SocketManager.resultData.WinAmout < bet * 10)
         {
             GhostIdle_Anim.gameObject.SetActive(false);
             if (GhostLaugh_Anim) GhostLaugh_Anim.gameObject.SetActive(true);
             GhostLaugh_Anim.StartAnimation();
-            audioController.PlayWLAudio("win");
-            audioController.PlayGhostAudio();
-            yield return new WaitForSeconds(3.5f);
+            audioController.PlayWLAudio("win",1.1f);
+            audioController.PlayGhostAudio(1.1f);
+            yield return new WaitForSeconds(2f);
             audioController.StopWLAaudio();
             GhostLaugh_Anim.StopAnimation();
             GhostLaugh_Anim.gameObject.SetActive(false);
@@ -567,7 +570,8 @@ public class SlotBehaviour : MonoBehaviour
             CheckPopups = false;
 
         }
-        else {
+        else
+        {
 
             CheckPopups = false;
 
@@ -583,7 +587,11 @@ public class SlotBehaviour : MonoBehaviour
 
         if (!IsAutoSpin)
         {
-            if (SocketManager.playerdata.currentWining > 1) gambleController.toggleDoubleButton(true);
+            if (SocketManager.playerdata.currentWining > 0 && SocketManager.playerdata.currentWining <= SocketManager.GambleLimit)
+            {
+                gambleController.toggleDoubleButton(true);
+            }
+
             ToggleButtonGrp(true);
             IsSpinning = false;
         }
@@ -601,9 +609,11 @@ public class SlotBehaviour : MonoBehaviour
     }
 
 
-    internal void updateBalance()
+    internal void updateBalance(double gambleAmount=0,double winAmount=0)
     {
-        if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString();
+        // if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString();
+        if (Balance_text) Balance_text.text = (SocketManager.playerdata.Balance+(winAmount- gambleAmount)).ToString();
+        if (TotalWin_text) TotalWin_text.text=winAmount.ToString();
     }
 
     private void CompareBalance()
