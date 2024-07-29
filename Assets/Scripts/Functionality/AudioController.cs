@@ -30,7 +30,7 @@ public class AudioController : MonoBehaviour
         //audioPlayer_button.clip = clips[clips.Length - 1];
     }
 
-    internal void PlayWLAudio(string type)
+    internal void PlayWLAudio(string type, float pitch=1)
     {
 
         int index = 0;
@@ -56,6 +56,7 @@ public class AudioController : MonoBehaviour
         //StopWLAaudio();
         //audioPlayer_wl.clip = clips[index];
         //audioPlayer_wl.loop = true;
+        audioPlayer_wl.pitch=pitch;
         audioPlayer_wl.Play();
 
     }
@@ -80,10 +81,11 @@ public class AudioController : MonoBehaviour
         }
     }
 
-    internal void PlayGhostAudio() {
+    internal void PlayGhostAudio(float pitch=1) {
 
         print("triggered");
         ghostAudioPlayer.Stop();
+        ghostAudioPlayer.pitch=pitch;
         ghostAudioPlayer.clip = Ghost_win_Audio;
         ghostAudioPlayer.Play();
     }
@@ -98,6 +100,7 @@ public class AudioController : MonoBehaviour
     internal void StopGhostAudio() {
 
         ghostAudioPlayer.Stop();
+        ghostAudioPlayer.pitch=1;
 
     }
 
@@ -168,6 +171,7 @@ public class AudioController : MonoBehaviour
     internal void StopWLAaudio()
     {
         audioPlayer_wl.Stop();
+        audioPlayer_wl.pitch=1;
         audioPlayer_wl.loop = false;
     }
 
