@@ -46,7 +46,7 @@ public class GambleController : MonoBehaviour
     internal bool isResult = false;
 
     private double winAmount;
-    private double gambleAmount;
+    internal double gambleAmount;
     private void Start()
     {
         if (doubleButton) doubleButton.onClick.RemoveAllListeners();
@@ -194,7 +194,6 @@ public class GambleController : MonoBehaviour
 
         yield return new WaitUntil(() => socketManager.isResultdone);
         ComputeCards();
-        gambleAmount=socketManager.resultData.WinAmout;
         gambleStart = true;
     }
 

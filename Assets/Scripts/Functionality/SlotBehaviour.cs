@@ -589,6 +589,7 @@ public class SlotBehaviour : MonoBehaviour
         {
             if (SocketManager.playerdata.currentWining > 0 && SocketManager.playerdata.currentWining <= SocketManager.GambleLimit)
             {
+                gambleController.gambleAmount=SocketManager.resultData.WinAmout;
                 gambleController.toggleDoubleButton(true);
             }
 
