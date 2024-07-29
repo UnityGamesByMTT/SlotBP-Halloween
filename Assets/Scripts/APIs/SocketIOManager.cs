@@ -32,7 +32,7 @@ public class SocketIOManager : MonoBehaviour
     [SerializeField]
     internal JSHandler _jsManager;
 
-    internal double GambleLimit=0;
+    internal double GambleLimit = 0;
     //[SerializeField]
     //private string SocketURI;
     private string SocketURI = "https://dev.casinoparadize.com";
@@ -223,26 +223,25 @@ public class SocketIOManager : MonoBehaviour
     internal void CloseWebSocket()
     {
         CloseSocketMesssage("EXIT");
-        if (this.manager != null)
-        {
-            this.manager.Close();
-        }
+        
+    DOVirtual.DelayedCall(0.1f, () =>
+    {
+    if (this.manager != null)
+    {
+        Debug.Log("Dispose my Socket");
+        this.manager.Close();
+    }
+    });
+
     }
     private void CloseSocketMesssage(string eventName)
     {
         // Construct message data
 
-        ExitData message = new ExitData();
-        message.id = "EXIT";
-
-        // Serialize message data to JSON
-        string json = JsonUtility.ToJson(message);
-        Debug.Log(json);
-        // Send the message
         if (this.manager.Socket != null && this.manager.Socket.IsOpen)
         {
-            this.manager.Socket.Emit(eventName, json);
-            Debug.Log("JSON data sent: " + json);
+            this.manager.Socket.Emit(eventName);
+            //Debug.Log("JSON data sent: " + json);
         }
         else
         {
