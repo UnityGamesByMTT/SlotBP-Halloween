@@ -422,6 +422,16 @@ public class SlotBehaviour : MonoBehaviour
                 break;
         }
     }
+    private void OnApplicationFocus(bool focus)
+    {
+        if(focus)
+        {
+            if(!IsSpinning)
+            {
+                if (audioController) audioController.StopWLAaudio();
+            }
+        }
+    }
 
     private void StartSlots(bool autoSpin = false)
     {
@@ -634,13 +644,11 @@ public class SlotBehaviour : MonoBehaviour
 
     void ToggleButtonGrp(bool toggle)
     {
-
         if (SlotStart_Button) SlotStart_Button.interactable = toggle;
         if (Lines_Button) Lines_Button.interactable = toggle;
         if (MaxBet_Button) MaxBet_Button.interactable = toggle;
         if (AutoSpin_Button) AutoSpin_Button.interactable = toggle;
         if (BetOne_button) BetOne_button.interactable = toggle;
-
     }
 
 
