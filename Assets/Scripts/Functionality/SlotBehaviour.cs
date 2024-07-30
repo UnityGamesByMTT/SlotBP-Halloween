@@ -238,6 +238,7 @@ public class SlotBehaviour : MonoBehaviour
         {
             StartSlots(IsAutoSpin);
             yield return tweenroutine;
+            yield return new WaitForSeconds(2f);
 
 
         }
@@ -329,7 +330,7 @@ public class SlotBehaviour : MonoBehaviour
     private void PopulateSlot(List<int> values, int number)
     {
         if (Slot_Objects[number]) Slot_Objects[number].SetActive(true);
-        for (int i = 0; i < 18; i++)
+        for (int i = 0; i < values.Count; i++)
         {
             GameObject myImg = Instantiate(Image_Prefab, Slot_Transform[number]);
             images[number].slotImages.Add(myImg.transform.GetChild(0).GetComponent<Image>());
@@ -344,7 +345,7 @@ public class SlotBehaviour : MonoBehaviour
             PopulateAnimationSprites(images[number].slotImages[images[number].slotImages.Count - 1].GetComponent<ImageAnimation>(), values[k]);
         }
         if (mainContainer_RT) LayoutRebuilder.ForceRebuildLayoutImmediate(mainContainer_RT);
-        tweenHeight = (18 * IconSizeFactor) - 280;
+        tweenHeight = (values.Count * IconSizeFactor) - 280;
         GenerateMatrix(number);
     }
 
@@ -424,9 +425,9 @@ public class SlotBehaviour : MonoBehaviour
     }
     private void OnApplicationFocus(bool focus)
     {
-        if(focus)
+        if (focus)
         {
-            if(!IsSpinning)
+            if (!IsSpinning)
             {
                 if (audioController) audioController.StopWLAaudio();
             }
@@ -508,9 +509,15 @@ public class SlotBehaviour : MonoBehaviour
             Debug.Log("Error while conversion " + e.Message);
         }
 
+        double initAmount = balance;
         balance = balance - bet;
 
-        if (Balance_text) Balance_text.text = balance.ToString();
+        DOTween.To(() => initAmount, (val) => initAmount = val, balance, 0.8f).OnUpdate(() =>
+        {
+            if (Balance_text) Balance_text.text = initAmount.ToString("f2");
+        });
+
+        // if (Balance_text) Balance_text.text = balance.ToString();
 
         SocketManager.AccumulateResult(BetCounter);
 
@@ -563,14 +570,16 @@ public class SlotBehaviour : MonoBehaviour
         {
             uiManager.PopulateWin(3, SocketManager.resultData.WinAmout);
         }
-        else if (SocketManager.resultData.WinAmout > 0 &&  SocketManager.resultData.WinAmout < bet * 10)
+        else if (SocketManager.resultData.WinAmout > 0 && SocketManager.resultData.WinAmout < bet * 10)
         {
             GhostIdle_Anim.gameObject.SetActive(false);
             if (GhostLaugh_Anim) GhostLaugh_Anim.gameObject.SetActive(true);
             GhostLaugh_Anim.StartAnimation();
-            audioController.PlayWLAudio("win",1.1f);
-            audioController.PlayGhostAudio(1.1f);
-            yield return new WaitForSeconds(2f);
+            audioController.PlayWLAudio("win", 1.25f);
+            audioController.PlayGhostAudio(1.3f);
+            if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("f2");
+            if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("f2");
+            yield return new WaitForSeconds(3f);
             audioController.StopWLAaudio();
             GhostLaugh_Anim.StopAnimation();
             GhostLaugh_Anim.gameObject.SetActive(false);
@@ -589,9 +598,9 @@ public class SlotBehaviour : MonoBehaviour
 
         yield return new WaitUntil(() => !CheckPopups);
 
-        if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString();
+        if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("f2");
 
-        if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString();
+        if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("f2");
 
         print("checkpopups, " + CheckPopups);
 
@@ -599,7 +608,7 @@ public class SlotBehaviour : MonoBehaviour
         {
             if (SocketManager.playerdata.currentWining > 0 && SocketManager.playerdata.currentWining <= SocketManager.GambleLimit)
             {
-                gambleController.gambleAmount=SocketManager.resultData.WinAmout;
+                gambleController.gambleAmount = SocketManager.resultData.WinAmout;
                 gambleController.toggleDoubleButton(true);
             }
 
@@ -620,11 +629,11 @@ public class SlotBehaviour : MonoBehaviour
     }
 
 
-    internal void updateBalance(double gambleAmount=0,double winAmount=0)
+    internal void updateBalance()
     {
         // if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString();
-        if (Balance_text) Balance_text.text = (SocketManager.playerdata.Balance+(winAmount- gambleAmount)).ToString();
-        if (TotalWin_text) TotalWin_text.text=winAmount.ToString();
+        if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("f2");
+        if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("f2");
     }
 
     private void CompareBalance()

@@ -252,13 +252,13 @@ public class GambleController : MonoBehaviour
         if (DealerCard_Script) DealerCard_Script.FlipMyObject();
         if (socketManager.myMessage.playerWon)
         {
-            winamount.text = socketManager.myMessage.winningAmount.ToString();
+            winamount.text = socketManager.myMessage.currentWining.ToString();
         }
         else
         {
             winamount.text = "0";
         }
-        winAmount=socketManager.myMessage.winningAmount;
+        winAmount=socketManager.myMessage.currentWining;
         StartCoroutine(Collectroutine());
 
     }
@@ -269,7 +269,7 @@ public class GambleController : MonoBehaviour
         yield return new WaitForSeconds(2f);
         gambleStart = false;
         yield return new WaitForSeconds(2);
-        slotController.updateBalance(gambleAmount,winAmount);
+        slotController.updateBalance();
         if (gamble_game) gamble_game.SetActive(false);
         allcards.ForEach((element) =>
         {

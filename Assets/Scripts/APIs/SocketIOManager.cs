@@ -247,15 +247,15 @@ public class SocketIOManager : MonoBehaviour
     internal void CloseWebSocket()
     {
         CloseSocketMesssage("EXIT");
-        
-    DOVirtual.DelayedCall(0.1f, () =>
-    {
-    if (this.manager != null)
-    {
-        Debug.Log("Dispose my Socket");
-        this.manager.Close();
-    }
-    });
+
+        DOVirtual.DelayedCall(0.1f, () =>
+        {
+            if (this.manager != null)
+            {
+                Debug.Log("Dispose my Socket");
+                this.manager.Close();
+            }
+        });
 
     }
     private void CloseSocketMesssage(string eventName)
@@ -316,6 +316,8 @@ public class SocketIOManager : MonoBehaviour
                 {
                     Debug.Log(jsonObject);
                     myMessage = myData.message;
+                    playerdata.Balance = myData.message.Balance;
+                    playerdata.currentWining = myData.message.currentWining;
                     isResultdone = true;
                     break;
                 }
@@ -572,7 +574,8 @@ public class Message
     public PlayerData PlayerData { get; set; }
     public List<string> BonusData { get; set; }
 
-    public int winningAmount { get; set; }
+    public double Balance { get; set; }
+    public double currentWining { get; set; }
     public double maxGambleBet { get; set; }
 }
 
