@@ -92,7 +92,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button CloseDisconnect_Button;
     [SerializeField] private GameObject DisconnectPopup_Object;
 
-
+    [Header("AnotherDevice Popup")]
+    [SerializeField] private Button CloseAD_Button;
+    [SerializeField] private GameObject ADPopup_Object;
 
     private bool isExit = false;
 
@@ -147,6 +149,9 @@ public class UIManager : MonoBehaviour
 
         if (Setting_close_button) Setting_close_button.onClick.RemoveAllListeners();
         if (Setting_close_button) Setting_close_button.onClick.AddListener(delegate { ClosePopup(SettingsPopUpObject); });
+
+        if (CloseAD_Button) CloseAD_Button.onClick.RemoveAllListeners();
+        if (CloseAD_Button) CloseAD_Button.onClick.AddListener(CallOnExitFunction);
 
     }
 
@@ -318,6 +323,11 @@ public class UIManager : MonoBehaviour
 
     }
 
+
+    internal void ADfunction()
+    {
+        OpenPopup(ADPopup_Object); 
+    }
 
     internal void DisconnectionPopup(bool isReconnection)
     {
