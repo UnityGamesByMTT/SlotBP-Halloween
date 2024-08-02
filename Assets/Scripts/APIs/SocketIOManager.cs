@@ -165,7 +165,7 @@ public class SocketIOManager : MonoBehaviour
         uiManager.ADfunction();
     }
 
-    private void AliveRequest(string eventName)
+    private void AliveRequest()
     {
         InitData message = new InitData();
         if (this.manager.Socket != null && this.manager.Socket.IsOpen)
