@@ -279,6 +279,7 @@ public class GambleController : MonoBehaviour
         DealerCard_Script.Card_Button.image.sprite = cardCover;
         DealerCard_Script.once = false;
         toggleDoubleButton(false);
+        slider.fillAmount=0;
 
     }
 
