@@ -224,10 +224,9 @@ public class UIManager : MonoBehaviour
 
         DOVirtual.DelayedCall(6f, () =>
         {
-            if (WinPopup_Object) WinPopup_Object.SetActive(false);
-
             audioController.StopWitchAudio();
-            if (MainPopup_Object) MainPopup_Object.SetActive(false);
+            ClosePopup(WinPopup_Object);
+            Win_Text.text="";
             slotManager.CheckPopups = false;
         });
     }
@@ -261,7 +260,10 @@ public class UIManager : MonoBehaviour
         if (audioController) audioController.PlayButtonAudio();
 
         if (Popup) Popup.SetActive(false);
+        if(!DisconnectPopup_Object.activeSelf){
+
         if (MainPopup_Object) MainPopup_Object.SetActive(false);
+        }
     }
 
     internal void InitialiseUIData(string SupportUrl, string AbtImgUrl, string TermsUrl, string PrivacyUrl, Paylines symbolsText)
