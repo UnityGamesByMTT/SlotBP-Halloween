@@ -312,14 +312,6 @@ public class SocketIOManager : MonoBehaviour
                     isResultdone = true;
                     break;
                 }
-            // case "GambleResult":
-            //     {
-            //         Debug.Log(jsonObject);
-            //         gambleData = myData.message.GambleData;
-            //         playerdata = myData.message.PlayerData;
-            //         isResultdone = true;
-            //         break;
-            //     }
             case "GambleResult":
                 {
                     Debug.Log(jsonObject);
@@ -341,12 +333,7 @@ public class SocketIOManager : MonoBehaviour
 
     private void PopulateSlotSocket(List<string> slotPop)
     {
-        for (int i = 0; i < slotPop.Count; i++)
-        {
-            List<int> points = slotPop[i]?.Split(',')?.Select(Int32.Parse)?.ToList();
-            slotManager.PopulateInitalSlots(i, points);
-        }
-
+        slotManager.shuffleInitialMatrix();
         for (int i = 0; i < slotPop.Count; i++)
         {
             slotManager.LayoutReset(i);
@@ -451,7 +438,6 @@ public class SocketIOManager : MonoBehaviour
             {
                 stringList.Add(number.ToString());
             }
-
             // Join the string representation of integers with ","
             string joinedString = string.Join(",", stringList.ToArray()).Trim();
             resultList.Add(joinedString);
