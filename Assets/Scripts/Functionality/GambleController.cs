@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 public class GambleController : MonoBehaviour
 {
     [SerializeField]
@@ -41,7 +42,7 @@ public class GambleController : MonoBehaviour
     [SerializeField] private Sprite lowcard_Sprite;
     [SerializeField] private Sprite spare1card_Sprite;
     [SerializeField] private Sprite spare2card_Sprite;
-
+    [SerializeField] private Tween Gamble_Tween;
     internal bool gambleStart = false;
     internal bool isResult = false;
 
@@ -61,6 +62,8 @@ public class GambleController : MonoBehaviour
 
     void StartGamblegame()
     {
+        GambleTweeningAnim(false);
+        slotController.StopAutoSpin();
         winamount.text = "0";
         if (audioController) audioController.PlayButtonAudio();
         if (gamble_game) gamble_game.SetActive(true);
@@ -69,6 +72,7 @@ public class GambleController : MonoBehaviour
         StartCoroutine(GambleCoroutine());
     }
 
+    
     private void ComputeCards()
     {
         highcard_Sprite = CardSet(socketManager.myMessage.highCard.suit, socketManager.myMessage.highCard.value);
@@ -288,6 +292,18 @@ public class GambleController : MonoBehaviour
         StartCoroutine(Collectroutine());
     }
 
+    internal void GambleTweeningAnim(bool IsStart)
+    {
+        if (IsStart)
+        {
+           Gamble_Tween=doubleButton.transform.DOScale(new Vector2(1.18f, 1.18f), 1f).SetLoops(-1, LoopType.Yoyo).SetDelay(0);
+        }
+        else
+        {
+            Gamble_Tween.Kill();
+            doubleButton.transform.localScale = Vector3.one;
+        }
+    }
     IEnumerator loadingRoutine()
     {
         float fillAmount = 0;
