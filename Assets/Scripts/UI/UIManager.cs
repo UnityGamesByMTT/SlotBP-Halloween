@@ -30,13 +30,13 @@ public class UIManager : MonoBehaviour
     private TMP_Text[] SymbolsText;
     [SerializeField]
     private TMP_Text[] SpecialSymbolsText;
-    [SerializeField] private GameObject[] PageList;
+    [SerializeField]
+    private GameObject[] PageList;
     [SerializeField]
     private Button Next_Button;
     [SerializeField]
     private Button Previous_Button;
-    private int paginationCounter = 0;
-    [SerializeField] private Button[] paginationButtonGrp;
+    //[SerializeField] private Button[] paginationButtonGrp;
 
     [Header("Card Bonus Game")]
     [SerializeField]
@@ -97,6 +97,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject ADPopup_Object;
 
     private bool isExit = false;
+    private int paginationCounter = 0;
 
     private void Awake()
     {
@@ -107,7 +108,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         if (PaytableExit_Button) PaytableExit_Button.onClick.RemoveAllListeners();
-        if (PaytableExit_Button) PaytableExit_Button.onClick.AddListener(delegate { ClosePopup(PaytablePopup_Object); });
+        if (PaytableExit_Button) PaytableExit_Button.onClick.AddListener(delegate { ClosePopup(PaytablePopup_Object); ResetInfoUI(); });
 
         if (Info_Button) Info_Button.onClick.RemoveAllListeners();
         if (Info_Button) Info_Button.onClick.AddListener(delegate { OpenPopup(PaytablePopup_Object); });
@@ -118,10 +119,6 @@ public class UIManager : MonoBehaviour
 
         if (Previous_Button) Previous_Button.onClick.RemoveAllListeners();
         if (Previous_Button) Previous_Button.onClick.AddListener(delegate { TurnPage(false); });
-
-        if (Previous_Button) Previous_Button.interactable = false;
-
-        if (PaytablePopup_Object) PageList[0].SetActive(true);
 
         if (SoundSlider) SoundSlider.onValueChanged.AddListener(delegate { ToggleSound(); });
         if (MusicSlider) MusicSlider.onValueChanged.AddListener(delegate { ToggleMusic(); });
@@ -153,6 +150,7 @@ public class UIManager : MonoBehaviour
         if (CloseAD_Button) CloseAD_Button.onClick.RemoveAllListeners();
         if (CloseAD_Button) CloseAD_Button.onClick.AddListener(CallOnExitFunction);
 
+        ResetInfoUI();
     }
 
 
@@ -297,12 +295,32 @@ public class UIManager : MonoBehaviour
         if (audioController) audioController.PlayButtonAudio();
 
         if (type)
+        {
             paginationCounter++;
+            if(paginationCounter >= PageList.Length - 1)
+            {
+                NextPrevButton(1);
+            }
+            else
+            {
+                NextPrevButton(2);
+            }
+        }
         else
+        {
             paginationCounter--;
+            if(paginationCounter <= 0)
+            {
+                NextPrevButton(0);
+            }
+            else
+            {
+                NextPrevButton(2);
+            }
+        }
 
 
-        GoToPage(paginationCounter - 1);
+        GoToPage(paginationCounter);
 
 
     }
@@ -349,22 +367,46 @@ public class UIManager : MonoBehaviour
 
     private void GoToPage(int index)
     {
-
-        paginationCounter = index + 1;
-
-        paginationCounter = Mathf.Clamp(paginationCounter, 1, 2);
-
-        if (Next_Button) Next_Button.interactable = !(paginationCounter >= 2);
-
-        if (Previous_Button) Previous_Button.interactable = !(paginationCounter <= 1);
-
-        for (int i = 0; i < PageList.Length; i++)
+        if(index < PageList.Length)
         {
-            PageList[i].SetActive(false);
+            for(int i = 0; i < PageList.Length; i++)
+            {
+                if(i == index)
+                {
+                    PageList[i].SetActive(true);
+                }
+                else
+                {
+                    PageList[i].SetActive(false);
+                }
+            }
         }
+    }
 
+    private void NextPrevButton(int m_config)
+    {
+        switch (m_config)
+        {
+            case 0:
+                Next_Button.interactable = true;
+                Previous_Button.interactable = false;
+                break;
+            case 1:
+                Next_Button.interactable = false;
+                Previous_Button.interactable = true;
+                break;
+            case 2:
+                Next_Button.interactable = true;
+                Previous_Button.interactable = true;
+                break;
+        }
+    }
 
-        PageList[paginationCounter - 1].SetActive(true);
+    private void ResetInfoUI()
+    {
+        paginationCounter = 0;
+        NextPrevButton(0);
+        GoToPage(paginationCounter);
     }
 
     private void CallOnExitFunction()
