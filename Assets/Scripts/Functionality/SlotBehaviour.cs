@@ -212,7 +212,7 @@ public class SlotBehaviour : MonoBehaviour
         if (Lines_text) Lines_text.text = SocketManager.initialData.LinesCount[LineCounter].ToString();
         PayCalculator.SetButtonActive(SocketManager.initialData.LinesCount[LineCounter]);
         if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter] * SocketManager.initialData.Lines.Count).ToString();
-        if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString();
+        if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("f2");
         if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString();
         if (BetperLine_text) BetperLine_text.text = (SocketManager.initialData.Bets[BetCounter]).ToString();
         currentBalance = SocketManager.playerdata.Balance;
@@ -355,6 +355,7 @@ public class SlotBehaviour : MonoBehaviour
     {
         animScript.textureArray.Clear();
         animScript.textureArray.TrimExcess();
+        animScript.AnimationSpeed = 5;
         switch (val)
         {
             case 0:
@@ -421,6 +422,7 @@ public class SlotBehaviour : MonoBehaviour
                 for (int i = 0; i < Symbol11.Length; i++)
                 {
                     animScript.textureArray.Add(Symbol11[i]);
+                    animScript.AnimationSpeed = 2;
                 }
                 break;
         }
@@ -642,6 +644,13 @@ public class SlotBehaviour : MonoBehaviour
         }
 
     }
+
+    internal void DeactivateGamble()
+    {
+        StopAutoSpin();
+        ToggleButtonGrp(true);
+    }
+
     internal void CallCloseSocket()
     {
         SocketManager.CloseWebSocket();
@@ -801,6 +810,10 @@ public class SlotBehaviour : MonoBehaviour
     }
     #endregion
 
+    internal void GambleCollect()
+    {
+        SocketManager.GambleCollectCall();
+    }
 }
 
 [Serializable]

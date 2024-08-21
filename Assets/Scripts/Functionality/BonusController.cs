@@ -56,7 +56,7 @@ public class BonusController : MonoBehaviour
             cases.ResetCase();
         }
         isFinished = false;
-        TotalWin_text.text = "0";
+        TotalWin_text.text = "You Won \n\n 0";
         totalWin = 0;
         if (Bonus_Object) Bonus_Object.SetActive(false);
     }
