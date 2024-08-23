@@ -5403,6 +5403,8 @@ MonoBehaviour:
   - {fileID: 491400834}
   Next_Button: {fileID: 924631427}
   Previous_Button: {fileID: 1183083350}
+  Wild_Text: {fileID: 1808586687}
+  Bonus_Text: {fileID: 2102577892}
   DoubleBet_Button: {fileID: 1904672562}
   BonusPanel: {fileID: 2099467822}
   CardGame_Panel: {fileID: 1597645589}
@@ -11743,7 +11745,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f5a394a06eded45c180ff25c7da29791, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 187041d6839f44dc1807dd819b903763, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
