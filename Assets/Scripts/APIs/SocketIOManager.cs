@@ -49,7 +49,7 @@ public class SocketIOManager : MonoBehaviour
     private void Start()
     {
         OpenSocket();
-        Debug.unityLogger.logEnabled = false;
+        //Debug.unityLogger.logEnabled = false;
     }
 
     void ReceiveAuthToken(string jsonData)
@@ -735,6 +735,7 @@ public class Symbol
     public object defaultAmount { get; set; }
     public object symbolsCount { get; set; }
     public object increaseValue { get; set; }
+    public object description { get; set; }
     public int freeSpin { get; set; }
 }
 

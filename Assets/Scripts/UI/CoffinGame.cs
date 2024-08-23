@@ -59,7 +59,7 @@ public class CoffinGame : MonoBehaviour
         else
         {
 
-            text.text = (_bonusManager.bet*value).ToString();
+            text.text = string.Concat("You Won \n\n", (_bonusManager.bet*value).ToString());
 
         }
     }
