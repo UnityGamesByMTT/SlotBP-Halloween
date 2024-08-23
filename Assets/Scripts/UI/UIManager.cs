@@ -36,6 +36,10 @@ public class UIManager : MonoBehaviour
     private Button Next_Button;
     [SerializeField]
     private Button Previous_Button;
+    [SerializeField]
+    private TMP_Text Wild_Text;
+    [SerializeField]
+    private TMP_Text Bonus_Text;
     //[SerializeField] private Button[] paginationButtonGrp;
 
     [Header("Card Bonus Game")]
@@ -288,6 +292,17 @@ public class UIManager : MonoBehaviour
             if (SymbolsText[i]) SymbolsText[i].text = text;
         }
 
+        for (int i = 0; i < paylines.symbols.Count; i++)
+        {
+            if (paylines.symbols[i].Name.ToUpper() == "WILD")
+            {
+                if (Wild_Text) Wild_Text.text = paylines.symbols[i].description.ToString();
+            }
+            if (paylines.symbols[i].Name.ToUpper() == "BONUS")
+            {
+                if (Bonus_Text) Bonus_Text.text = paylines.symbols[i].description.ToString();
+            }
+        }
     }
 
     private void TurnPage(bool type)
