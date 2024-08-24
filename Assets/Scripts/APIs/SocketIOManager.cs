@@ -45,9 +45,11 @@ public class SocketIOManager : MonoBehaviour
 
     protected string gameID = "SL-HAL";
     internal bool isLoading = true;
+    internal bool SetInit = false;
 
     private void Start()
     {
+        SetInit = false;
         OpenSocket();
         //Debug.unityLogger.logEnabled = false;
     }
@@ -351,15 +353,23 @@ public class SocketIOManager : MonoBehaviour
         {
             case "InitData":
                 {
-                    Debug.Log(jsonObject);
                     initialData = myData.message.GameData;
                     initUIData = myData.message.UIData;
                     playerdata = myData.message.PlayerData;
                     bonusdata = myData.message.BonusData;
                     GambleLimit = myData.message.maxGambleBet;
-                    List<string> InitialReels = ConvertListOfListsToStrings(initialData.Reel);
-                    InitialReels = RemoveQuotes(InitialReels);
-                    PopulateSlotSocket(InitialReels);
+                    if (!SetInit)
+                    {
+                        Debug.Log(jsonObject);
+                        List<string> InitialReels = ConvertListOfListsToStrings(initialData.Reel);
+                        InitialReels = RemoveQuotes(InitialReels);
+                        PopulateSlotSocket(InitialReels);
+                        SetInit = true;
+                    }
+                    else
+                    {
+                        RefreshUI();
+                    }
                     break;
                 }
             case "ResultData":
@@ -389,6 +399,11 @@ public class SocketIOManager : MonoBehaviour
                     break;
                 }
         }
+    }
+
+    private void RefreshUI()
+    {
+        uiManager.InitialiseUIData(initUIData.AbtLogo.link, initUIData.AbtLogo.logoSprite, initUIData.ToULink, initUIData.PopLink, initUIData.paylines);
     }
 
     private void PopulateSlotSocket(List<string> slotPop)
