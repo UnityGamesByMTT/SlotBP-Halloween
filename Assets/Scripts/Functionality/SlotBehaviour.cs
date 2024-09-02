@@ -207,7 +207,7 @@ public class SlotBehaviour : MonoBehaviour
 
     internal void SetInitialUI()
     {
-        BetCounter = SocketManager.initialData.Bets.Count - 1;
+        BetCounter = 0;
         LineCounter = SocketManager.initialData.LinesCount.Count - 1;
         if (Lines_text) Lines_text.text = SocketManager.initialData.LinesCount[LineCounter].ToString();
         PayCalculator.SetButtonActive(SocketManager.initialData.LinesCount[LineCounter]);
