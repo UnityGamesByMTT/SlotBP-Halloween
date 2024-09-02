@@ -389,6 +389,7 @@ public class SocketIOManager : MonoBehaviour
                     playerdata.Balance = myData.message.Balance;
                     playerdata.currentWining = myData.message.currentWining;
                     isResultdone = true;
+                    slotManager.updateBalance();
                     break;
                 }
             case "gambleInitData":
