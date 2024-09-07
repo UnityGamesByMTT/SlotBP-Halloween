@@ -131,10 +131,10 @@ public class UIManager : MonoBehaviour
         if (Quit_button) Quit_button.onClick.AddListener(delegate { OpenPopup(QuitPopupObject); });
 
         if (no_button) no_button.onClick.RemoveAllListeners();
-        if (no_button) no_button.onClick.AddListener(delegate { ClosePopup(QuitPopupObject); });
+        if (no_button) no_button.onClick.AddListener(delegate { if(!isExit) ClosePopup(QuitPopupObject); });
 
         if (cancel_button) cancel_button.onClick.RemoveAllListeners();
-        if (cancel_button) cancel_button.onClick.AddListener(delegate { ClosePopup(QuitPopupObject); });
+        if (cancel_button) cancel_button.onClick.AddListener(delegate { if(!isExit) ClosePopup(QuitPopupObject); });
 
         if (yes_button) yes_button.onClick.RemoveAllListeners();
         if (yes_button) yes_button.onClick.AddListener(CallOnExitFunction);
@@ -429,6 +429,6 @@ public class UIManager : MonoBehaviour
         isExit = true;
         audioController.PlayButtonAudio();
         socketManager.CloseWebSocket();
-        Application.ExternalCall("window.parent.postMessage", "onExit", "*");
+        //Application.ExternalCall("window.parent.postMessage", "onExit", "*");
     }
 }
