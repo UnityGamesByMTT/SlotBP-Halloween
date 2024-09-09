@@ -71,6 +71,7 @@ public class AudioController : MonoBehaviour
             bg_adudio.Pause();
             audioPlayer_wl.Pause();
             audioPlayer_button.Pause();
+            audioPlayer_Spin.Pause();
         }
         else
         {
@@ -78,10 +79,12 @@ public class AudioController : MonoBehaviour
             if (IsSpinning)
             {
                 if (!audioPlayer_wl.mute) audioPlayer_wl.UnPause();
+                audioPlayer_Spin.UnPause();
             }
             else
             {
                 StopWLAaudio();
+                audioPlayer_Spin.Stop();
             }
             if (!audioPlayer_button.mute) audioPlayer_button.UnPause();
 
