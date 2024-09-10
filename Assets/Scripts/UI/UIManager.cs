@@ -100,13 +100,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button CloseAD_Button;
     [SerializeField] private GameObject ADPopup_Object;
 
+    [SerializeField] private Button m_AwakeGameButton;
+
     private bool isExit = false;
     private int paginationCounter = 0;
 
+    //private void Awake()
+    //{
+    //    if (spalsh_screen) spalsh_screen.SetActive(true);
+    //    StartCoroutine(LoadingRoutine());
+    //}
+
     private void Awake()
     {
-        if (spalsh_screen) spalsh_screen.SetActive(true);
-        StartCoroutine(LoadingRoutine());
+        SimulateClickByDefault();
     }
 
     private void Start()
@@ -157,6 +164,14 @@ public class UIManager : MonoBehaviour
         ResetInfoUI();
     }
 
+    //HACK: Something To Do Here
+    private void SimulateClickByDefault()
+    {
+
+        Debug.Log("Awaken The Game...");
+        m_AwakeGameButton.onClick.AddListener(() => { Debug.Log("Called The Game..."); });
+        m_AwakeGameButton.onClick.Invoke();
+    }
 
     internal void LowBalPopup()
     {
