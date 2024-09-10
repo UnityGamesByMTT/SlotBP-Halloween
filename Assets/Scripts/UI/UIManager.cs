@@ -100,13 +100,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button CloseAD_Button;
     [SerializeField] private GameObject ADPopup_Object;
 
+    [SerializeField] private Button m_AwakeGameButton;
+
     private bool isExit = false;
     private int paginationCounter = 0;
 
+    //private void Awake()
+    //{
+    //    if (spalsh_screen) spalsh_screen.SetActive(true);
+    //    StartCoroutine(LoadingRoutine());
+    //}
+
     private void Awake()
     {
-        if (spalsh_screen) spalsh_screen.SetActive(true);
-        StartCoroutine(LoadingRoutine());
+        SimulateClickByDefault();
     }
 
     private void Start()
@@ -131,10 +138,10 @@ public class UIManager : MonoBehaviour
         if (Quit_button) Quit_button.onClick.AddListener(delegate { OpenPopup(QuitPopupObject); });
 
         if (no_button) no_button.onClick.RemoveAllListeners();
-        if (no_button) no_button.onClick.AddListener(delegate { ClosePopup(QuitPopupObject); });
+        if (no_button) no_button.onClick.AddListener(delegate { if(!isExit) ClosePopup(QuitPopupObject); });
 
         if (cancel_button) cancel_button.onClick.RemoveAllListeners();
-        if (cancel_button) cancel_button.onClick.AddListener(delegate { ClosePopup(QuitPopupObject); });
+        if (cancel_button) cancel_button.onClick.AddListener(delegate { if(!isExit) ClosePopup(QuitPopupObject); });
 
         if (yes_button) yes_button.onClick.RemoveAllListeners();
         if (yes_button) yes_button.onClick.AddListener(CallOnExitFunction);
@@ -157,6 +164,14 @@ public class UIManager : MonoBehaviour
         ResetInfoUI();
     }
 
+    //HACK: Something To Do Here
+    private void SimulateClickByDefault()
+    {
+
+        Debug.Log("Awaken The Game...");
+        m_AwakeGameButton.onClick.AddListener(() => { Debug.Log("Called The Game..."); });
+        m_AwakeGameButton.onClick.Invoke();
+    }
 
     internal void LowBalPopup()
     {
@@ -429,6 +444,6 @@ public class UIManager : MonoBehaviour
         isExit = true;
         audioController.PlayButtonAudio();
         socketManager.CloseWebSocket();
-        Application.ExternalCall("window.parent.postMessage", "onExit", "*");
+        //Application.ExternalCall("window.parent.postMessage", "onExit", "*");
     }
 }
