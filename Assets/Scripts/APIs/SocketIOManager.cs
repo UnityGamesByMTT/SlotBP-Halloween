@@ -427,7 +427,7 @@ public class SocketIOManager : MonoBehaviour
 
         slotManager.SetInitialUI();
         isLoading = false;
-        //Application.ExternalCall("window.parent.postMessage", "OnEnter", "*");
+        Application.ExternalCall("window.parent.postMessage", "OnEnter", "*");
     }
 
     internal void AccumulateResult(double currBet)
