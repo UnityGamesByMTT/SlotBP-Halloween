@@ -1,7 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System;
+using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
+using DG.Tweening;
+using System.Linq;
 using Newtonsoft.Json;
 using Best.SocketIO;
 using Best.SocketIO.Events;
@@ -23,6 +28,9 @@ public class SocketIOManager : MonoBehaviour
 
     internal Message myMessage = null;
     private SocketManager manager;
+
+    [SerializeField]
+    internal JSHandler _jsManager;
 
     internal double GambleLimit = 0;
     private string SocketURI = null;

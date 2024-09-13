@@ -31939,7 +31939,7 @@ MonoBehaviour:
   Win_Audio: {fileID: 8300000, guid: 84232605ef827486bbf51961f4cb4313, type: 3}
   BonusWin_Audio: {fileID: 8300000, guid: 29419d367e652456a940d5d569281ef2, type: 3}
   BonusLose_Audio: {fileID: 8300000, guid: 63470f58a31ff4b4c9cb75a24223959b, type: 3}
-  NormalBg_Audio: {fileID: 8300000, guid: c45cf14b4372b45508bd84c6d76dbb9e, type: 3}
+  NormalBg_Audio: {fileID: 8300000, guid: 8e64286e459094872b08bd109a86784d, type: 3}
   BonusBg_Audio: {fileID: 8300000, guid: abe097b1d1c9248b09b39dbf80d901c4, type: 3}
   Ghost_win_Audio: {fileID: 8300000, guid: dcc5cd3ae442348c285c017e2fd8ea4a, type: 3}
   WitchLaughAudio: {fileID: 8300000, guid: 9c070d1b78e8f461cb47589bcb10df48, type: 3}
