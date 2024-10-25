@@ -479,7 +479,6 @@ public class SlotBehaviour : MonoBehaviour
 
     private IEnumerator TweenRoutine()
     {
-        IsSpinning = true;
 
         if (currentBalance < currentTotalBet)
         {
@@ -489,8 +488,10 @@ public class SlotBehaviour : MonoBehaviour
                 StopAutoSpin();
                 yield return new WaitForSeconds(1f);
             }
+            ToggleButtonGrp(true);
             yield break;
         }
+        IsSpinning = true;
         ToggleButtonGrp(false);
         CheckSpinAudio = true;
         gambleController.toggleDoubleButton(false);
@@ -665,14 +666,14 @@ public class SlotBehaviour : MonoBehaviour
         if (currentBalance < currentTotalBet)
         {
             uiManager.LowBalPopup();
-            if (AutoSpin_Button) AutoSpin_Button.interactable = false;
-            if (SlotStart_Button) SlotStart_Button.interactable = false;
+            //if (AutoSpin_Button) AutoSpin_Button.interactable = false;
+            //if (SlotStart_Button) SlotStart_Button.interactable = false;
         }
-        else
-        {
-            if (AutoSpin_Button) AutoSpin_Button.interactable = true;
-            if (SlotStart_Button) SlotStart_Button.interactable = true;
-        }
+        //else
+        //{
+        //    if (AutoSpin_Button) AutoSpin_Button.interactable = true;
+        //    if (SlotStart_Button) SlotStart_Button.interactable = true;
+        //}
     }
 
     private void WinningsAnim(bool IsStart)
