@@ -291,8 +291,8 @@ public class SlotBehaviour : MonoBehaviour
         if (TotalBet_text) TotalBet_text.text = currentTotalBet.ToString();
         if (BetperLine_text) BetperLine_text.text = SocketManager.initialData.Bets[BetCounter].ToString();
 
-        if (currentTotalBet < currentBalance)
-            CompareBalance();
+        //if (currentTotalBet < currentBalance)
+        CompareBalance();
     }
 
     private void ToggleLine()
@@ -311,13 +311,13 @@ public class SlotBehaviour : MonoBehaviour
         PayCalculator.SetButtonActive(SocketManager.initialData.LinesCount[LineCounter]);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && SlotStart_Button.interactable)
-        {
-            StartSlots();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space) && SlotStart_Button.interactable)
+    //    {
+    //        StartSlots();
+    //    }
+    //}
 
     internal void PopulateInitalSlots(int number, List<int> myvalues)
     {
@@ -691,9 +691,17 @@ public class SlotBehaviour : MonoBehaviour
     {
         if (SlotStart_Button) SlotStart_Button.interactable = toggle;
         if (Lines_Button) Lines_Button.interactable = toggle;
-        if (MaxBet_Button) MaxBet_Button.interactable = toggle;
         if (AutoSpin_Button) AutoSpin_Button.interactable = toggle;
-        if (BetOne_button) BetOne_button.interactable = toggle;
+        if(!IsSpinning || !IsAutoSpin)
+        {
+            if (MaxBet_Button) MaxBet_Button.interactable = true;
+            if (BetOne_button) BetOne_button.interactable = true;
+        }
+        else
+        {
+            if (MaxBet_Button) MaxBet_Button.interactable = toggle;
+            if (BetOne_button) BetOne_button.interactable = toggle;
+        }
     }
 
 
