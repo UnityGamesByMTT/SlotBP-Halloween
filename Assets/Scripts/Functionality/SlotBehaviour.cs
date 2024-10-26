@@ -291,8 +291,8 @@ public class SlotBehaviour : MonoBehaviour
         if (TotalBet_text) TotalBet_text.text = currentTotalBet.ToString();
         if (BetperLine_text) BetperLine_text.text = SocketManager.initialData.Bets[BetCounter].ToString();
 
-        if (currentTotalBet < currentBalance)
-            CompareBalance();
+        //if (currentTotalBet < currentBalance)
+        CompareBalance();
     }
 
     private void ToggleLine()
@@ -311,13 +311,13 @@ public class SlotBehaviour : MonoBehaviour
         PayCalculator.SetButtonActive(SocketManager.initialData.LinesCount[LineCounter]);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && SlotStart_Button.interactable)
-        {
-            StartSlots();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space) && SlotStart_Button.interactable)
+    //    {
+    //        StartSlots();
+    //    }
+    //}
 
     internal void PopulateInitalSlots(int number, List<int> myvalues)
     {
@@ -479,7 +479,6 @@ public class SlotBehaviour : MonoBehaviour
 
     private IEnumerator TweenRoutine()
     {
-        IsSpinning = true;
 
         if (currentBalance < currentTotalBet)
         {
@@ -489,8 +488,10 @@ public class SlotBehaviour : MonoBehaviour
                 StopAutoSpin();
                 yield return new WaitForSeconds(1f);
             }
+            ToggleButtonGrp(true);
             yield break;
         }
+        IsSpinning = true;
         ToggleButtonGrp(false);
         CheckSpinAudio = true;
         gambleController.toggleDoubleButton(false);
@@ -665,14 +666,14 @@ public class SlotBehaviour : MonoBehaviour
         if (currentBalance < currentTotalBet)
         {
             uiManager.LowBalPopup();
-            if (AutoSpin_Button) AutoSpin_Button.interactable = false;
-            if (SlotStart_Button) SlotStart_Button.interactable = false;
+            //if (AutoSpin_Button) AutoSpin_Button.interactable = false;
+            //if (SlotStart_Button) SlotStart_Button.interactable = false;
         }
-        else
-        {
-            if (AutoSpin_Button) AutoSpin_Button.interactable = true;
-            if (SlotStart_Button) SlotStart_Button.interactable = true;
-        }
+        //else
+        //{
+        //    if (AutoSpin_Button) AutoSpin_Button.interactable = true;
+        //    if (SlotStart_Button) SlotStart_Button.interactable = true;
+        //}
     }
 
     private void WinningsAnim(bool IsStart)
@@ -691,9 +692,17 @@ public class SlotBehaviour : MonoBehaviour
     {
         if (SlotStart_Button) SlotStart_Button.interactable = toggle;
         if (Lines_Button) Lines_Button.interactable = toggle;
-        if (MaxBet_Button) MaxBet_Button.interactable = toggle;
         if (AutoSpin_Button) AutoSpin_Button.interactable = toggle;
-        if (BetOne_button) BetOne_button.interactable = toggle;
+        if(!IsSpinning || !IsAutoSpin)
+        {
+            if (MaxBet_Button) MaxBet_Button.interactable = true;
+            if (BetOne_button) BetOne_button.interactable = true;
+        }
+        else
+        {
+            if (MaxBet_Button) MaxBet_Button.interactable = toggle;
+            if (BetOne_button) BetOne_button.interactable = toggle;
+        }
     }
 
 
