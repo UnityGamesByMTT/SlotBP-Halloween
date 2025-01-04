@@ -59,6 +59,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite BigWin_Sprite;
     [SerializeField] private Sprite HugeWin_Sprite;
     [SerializeField] private Sprite MegaWin_Sprite;
+    [SerializeField] private Button MegaWinHideBtn;
+    private Tween TextTween, WinTween;
 
     [Header("Splash Screen")]
     [SerializeField] private GameObject spalsh_screen;
@@ -161,6 +163,9 @@ public class UIManager : MonoBehaviour
         if (CloseAD_Button) CloseAD_Button.onClick.RemoveAllListeners();
         if (CloseAD_Button) CloseAD_Button.onClick.AddListener(CallOnExitFunction);
 
+        if (MegaWinHideBtn) MegaWinHideBtn.onClick.RemoveAllListeners();
+        if (MegaWinHideBtn) MegaWinHideBtn.onClick.AddListener(OnClickMegaWinHide);
+
         ResetInfoUI();
     }
 
@@ -227,25 +232,36 @@ public class UIManager : MonoBehaviour
     private void StartPopupAnim(double amount, bool jackpot = false)
     {
         audioController.PlaywitchAudio();
-        int initAmount = 0;
+        double initAmount = 0;
 
         if (WinPopup_Object) WinPopup_Object.SetActive(true);
 
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
 
-        DOTween.To(() => initAmount, (val) => initAmount = val, (int)amount, 5f).OnUpdate(() =>
+        TextTween = DOTween.To(() => initAmount, (val) => initAmount = val, amount, 5f).OnUpdate(() =>
         {
-                if (Win_Text) Win_Text.text = initAmount.ToString();
+                if (Win_Text) Win_Text.text = initAmount.ToString("f2");
 
         });
 
-        DOVirtual.DelayedCall(6f, () =>
+        WinTween = DOVirtual.DelayedCall(6f, () =>
         {
             audioController.StopWitchAudio();
             ClosePopup(WinPopup_Object);
-            Win_Text.text="";
+            Win_Text.text = "";
             slotManager.CheckPopups = false;
         });
+    }
+
+    private void OnClickMegaWinHide()
+    {
+        TextTween?.Kill();
+        WinTween?.Kill();
+
+        audioController.StopWitchAudio();
+        ClosePopup(WinPopup_Object);
+        Win_Text.text = "";
+        slotManager.CheckPopups = false;
     }
 
     private void OpenBonusGame(bool type)
@@ -294,15 +310,15 @@ public class UIManager : MonoBehaviour
             string text = null;
             if (paylines.symbols[i].Multiplier[0][0] != 0)
             {
-                text += "5x - " + paylines.symbols[i].Multiplier[0][0];
+                text += "5x - " + paylines.symbols[i].Multiplier[0][0]+"x";
             }
             if (paylines.symbols[i].Multiplier[1][0] != 0)
             {
-                text += "\n4x - " + paylines.symbols[i].Multiplier[1][0];
+                text += "\n4x - " + paylines.symbols[i].Multiplier[1][0]+"x";
             }
             if (paylines.symbols[i].Multiplier[2][0] != 0)
             {
-                text += "\n3x - " + paylines.symbols[i].Multiplier[2][0];
+                text += "\n3x - " + paylines.symbols[i].Multiplier[2][0]+"x";
             }
             if (SymbolsText[i]) SymbolsText[i].text = text;
         }
