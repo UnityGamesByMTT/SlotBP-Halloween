@@ -163,7 +163,7 @@ public class SlotBehaviour : MonoBehaviour
     internal bool WasAutoSpinOn = false;
     private float SpinDelay = 0.2f;
     private Sprite turboOriginalSprite;
-    private Tween ScoreTween;
+    private Tween  ScoreTween;
 
     private void Start()
     {
@@ -193,10 +193,10 @@ public class SlotBehaviour : MonoBehaviour
         if (BetOne_button) BetOne_button.onClick.AddListener(OnBetOne);
 
         if (StopSpin_Button) StopSpin_Button.onClick.RemoveAllListeners();
-        if (StopSpin_Button) StopSpin_Button.onClick.AddListener(() => { StopSpinToggle = true; StopSpin_Button.gameObject.SetActive(false); });
+        if (StopSpin_Button) StopSpin_Button.onClick.AddListener(() => { StopSpinToggle = true; StopSpin_Button.gameObject.SetActive(false); if (audioController) audioController.PlayButtonAudio(); });
 
         if (Turbo_Button) Turbo_Button.onClick.RemoveAllListeners();
-        if (Turbo_Button) Turbo_Button.onClick.AddListener(TurboToggle);
+        if (Turbo_Button) Turbo_Button.onClick.AddListener(delegate {TurboToggle(); if (audioController) audioController.PlayButtonAudio();});
 
         if (Bet_plus) Bet_plus.onClick.RemoveAllListeners();
         if (Bet_plus) Bet_plus.onClick.AddListener(delegate { ChangeBet(true); });
@@ -631,7 +631,7 @@ public class SlotBehaviour : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 yield return new WaitForSeconds(0.1f);
                 if (StopSpinToggle)
@@ -915,6 +915,7 @@ public class SlotBehaviour : MonoBehaviour
     private IEnumerator StopTweening(int reqpos, Transform slotTransform, int index, bool isStop)
     {
         alltweens[index].Pause();
+        slotTransform.localPosition = new Vector2(slotTransform.localPosition.x, 0);
         int tweenpos = (reqpos * IconSizeFactor) - IconSizeFactor;
         alltweens[index] = slotTransform.DOLocalMoveY(-tweenpos - 8 + 100, 0.5f).SetEase(Ease.OutElastic);
         if (!isStop)
