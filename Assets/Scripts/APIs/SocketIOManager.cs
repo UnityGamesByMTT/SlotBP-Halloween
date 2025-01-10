@@ -34,7 +34,8 @@ public class SocketIOManager : MonoBehaviour
 
     internal double GambleLimit = 0;
     private string SocketURI = null;
-    private string TestSocketURI = "https://game-crm-rtp-backend.onrender.com/";
+    //private string TestSocketURI = "https://game-crm-rtp-backend.onrender.com/";
+    protected string TestSocketURI = "http://localhost:5000";
     private const int maxReconnectionAttempts = 6;
     private readonly TimeSpan reconnectionDelay = TimeSpan.FromSeconds(10);
 
@@ -43,7 +44,8 @@ public class SocketIOManager : MonoBehaviour
 
     internal bool isResultdone = false;
 
-    protected string gameID = "SL-HAL";
+     protected string gameID = "SL-HAL";
+    //protected string gameID = "";
     internal bool isLoading = true;
     internal bool SetInit = false;
 
@@ -62,7 +64,7 @@ public class SocketIOManager : MonoBehaviour
         SocketURI = data.socketURL;
         myAuth = data.cookie;
     }
-
+    
     string myAuth = null;
 
     private void OpenSocket()
