@@ -320,7 +320,7 @@ public class SlotBehaviour : MonoBehaviour
         currentTotalBet = SocketManager.initialData.Bets[BetCounter] * SocketManager.initialData.Lines.Count;
         if (BetperLine_text) BetperLine_text.text = (SocketManager.initialData.Bets[BetCounter]).ToString();
         if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter] * SocketManager.initialData.Lines.Count).ToString();
-        CompareBalance();
+       // CompareBalance();
 
     }
     private void ChangeBet(bool IncDec)
@@ -347,7 +347,7 @@ public class SlotBehaviour : MonoBehaviour
         // if (LineBet_text) LineBet_text.text = SocketManager.initialData.Bets[BetCounter].ToString();
         if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter] * SocketManager.initialData.Lines.Count).ToString();
         currentTotalBet = SocketManager.initialData.Bets[BetCounter] * SocketManager.initialData.Lines.Count;
-        CompareBalance();
+        //CompareBalance();
     }
     
     private void MaxBet()
@@ -360,7 +360,7 @@ public class SlotBehaviour : MonoBehaviour
         if (BetperLine_text) BetperLine_text.text = SocketManager.initialData.Bets[BetCounter].ToString();
 
         //if (currentTotalBet < currentBalance)
-        CompareBalance();
+       // CompareBalance();
     }
 
     private void ToggleLine()
@@ -628,6 +628,7 @@ public class SlotBehaviour : MonoBehaviour
         {
 
             yield return new WaitForSeconds(0.1f);
+            StopSpinToggle = true;
         }
         else
         {

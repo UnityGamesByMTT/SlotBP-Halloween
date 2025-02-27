@@ -35,7 +35,7 @@ public class SocketIOManager : MonoBehaviour
     internal double GambleLimit = 0;
     private string SocketURI = null;
     //private string TestSocketURI = "https://game-crm-rtp-backend.onrender.com/";
-    protected string TestSocketURI = "http://localhost:5000";
+    protected string TestSocketURI = "http://localhost:5001";
     private const int maxReconnectionAttempts = 6;
     private readonly TimeSpan reconnectionDelay = TimeSpan.FromSeconds(10);
 

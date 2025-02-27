@@ -43,7 +43,7 @@ public class BonusController : MonoBehaviour
     internal void setTotalWin(double amount) {
         totalWin += amount * bet;
 
-        if (TotalWin_text) TotalWin_text.text = totalWin.ToString("f2");
+        if (TotalWin_text) TotalWin_text.text = totalWin.ToString("f3");
 
     }
 
@@ -56,7 +56,7 @@ public class BonusController : MonoBehaviour
             cases.ResetCase();
         }
         isFinished = false;
-        TotalWin_text.text = "0.00";
+        TotalWin_text.text = "0.000";
         totalWin = 0;
         if (Bonus_Object) Bonus_Object.SetActive(false);
     }
