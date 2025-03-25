@@ -39,7 +39,7 @@ public class SocketIOManager : MonoBehaviour
     internal double GambleLimit = 0;
     private string SocketURI = null;
     //private string TestSocketURI = "https://game-crm-rtp-backend.onrender.com/";
-    protected string TestSocketURI = "http://localhost:5001";
+    protected string TestSocketURI = "http://localhost:5001/";
     private const int maxReconnectionAttempts = 6;
     private readonly TimeSpan reconnectionDelay = TimeSpan.FromSeconds(10);
 
@@ -74,10 +74,11 @@ public class SocketIOManager : MonoBehaviour
 
     private void OpenSocket()
     {
+       
         // Create and setup SocketOptions
         SocketOptions options = new SocketOptions();
         //options.AutoConnect = false;
-        options.AutoConnect = false;
+        //options.AutoConnect = false;
         options.ReconnectionAttempts = maxReconnectionAttempts;
         options.ReconnectionDelay = reconnectionDelay;
         options.Reconnection = true;
@@ -98,6 +99,7 @@ public class SocketIOManager : MonoBehaviour
         options.Auth = authFunction;
         // Proceed with connecting to the server
         SetupSocketManager(options);
+       
 #endif
     }
 
@@ -218,6 +220,7 @@ public class SocketIOManager : MonoBehaviour
         if (string.IsNullOrEmpty(nameSpace) | string.IsNullOrWhiteSpace(nameSpace))
         {
             gameSocket = this.manager.Socket;
+            Debug.Log("___________sendAuth");
         }
         else
         {
