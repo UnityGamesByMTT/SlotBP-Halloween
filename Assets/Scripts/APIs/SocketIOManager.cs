@@ -81,6 +81,7 @@ public class SocketIOManager : MonoBehaviour
         options.ReconnectionAttempts = maxReconnectionAttempts;
         options.ReconnectionDelay = reconnectionDelay;
         options.Reconnection = true;
+        options.ConnectWith = Best.SocketIO.Transports.TransportTypes.WebSocket; //BackendChanges
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         JSManager.SendCustomMessage("authToken");
