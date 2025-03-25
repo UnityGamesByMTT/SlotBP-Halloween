@@ -152,7 +152,7 @@ public class UIManager : MonoBehaviour
         if (LBExit_Button) LBExit_Button.onClick.AddListener(delegate { ClosePopup(LBPopup_Object); });
 
         if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.RemoveAllListeners();
-        if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.AddListener(CallOnExitFunction);
+        if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.AddListener(delegate { CallOnExitFunction(); socketManager.closeSocketReactnativeCall(); });
 
         if (Setting_button) Setting_button.onClick.RemoveAllListeners();
         if (Setting_button) Setting_button.onClick.AddListener(delegate { OpenPopup(SettingsPopUpObject); });
